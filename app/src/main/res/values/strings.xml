@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">LearnApp</string>
+
+    <string name="display_large">Display Large</string>
+    <string name="display_medium">Display Medium</string>
+    <string name="display_small">Display Small</string>
+    <string name="title_small">Title Small</string>
+    <string name="add">Add</string>
+    <string name="headline">Headline</string>
+    <string name="supporting_text">Supporting text</string>
+    <string name="login_hint">Login</string>
+
 </resources>
