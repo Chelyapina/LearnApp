@@ -1,0 +1,17 @@
+<resources>
+    // Card
+    <string name="word_card_progress">Карточка: %1$d/%2$d</string>
+    <string name="deck_is_empty">Колода пуста</string>
+    <string name="dont_remember">Не помню</string>
+    <string name="remember">Помню</string>
+
+    //tabRow
+    <string name="tab_row_label_new">Новые</string>
+    <string name="tab_row_label_repeat">Изученные</string>
+    <string name="button_again">Попробовать снова</string>
+    <string name="burtton_reset">Начать заново</string>
+    <string name="empty_deck_text">Тренировка окончена!</string>
+    <string name="deck_label_learn">Учим</string>
+    <string name="deck_label_repeat">Повторяем</string>
+    <string name="load_word">Загрузка слов...</string>
+</resources>

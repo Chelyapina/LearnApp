@@ -1,4 +1,4 @@
-package com.example.learnapp.ui.theme
+package com.example.designsystem.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -9,6 +9,8 @@ import androidx.compose.runtime.Composable
 private val DarkColorScheme = darkColorScheme(
     primary = BaseYellow,
     onPrimary = DarkGray,
+    primaryContainer = AmberContainer,
+    onPrimaryContainer = DarkSurfaceGray,
     background = DarkGray,
     onBackground = White,
     surface = DarkSurfaceGray,
@@ -20,6 +22,8 @@ private val DarkColorScheme = darkColorScheme(
 private val LightColorScheme = lightColorScheme(
     primary = BaseYellow,
     onPrimary = DarkGray,
+    primaryContainer = AmberContainer,
+    onPrimaryContainer = DarkSurfaceGray,
     background = White,
     onBackground = DarkGray,
     surface = LightSurfaceGray,

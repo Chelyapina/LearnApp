@@ -1,0 +1,6 @@
+<resources>
+    // AppBar
+    <string name="description_icon_back">Назад</string>
+    <string name="description_icon_menu">Меню</string>
+    <string name="default_initial">\?</string>
+</resources>
