@@ -41,6 +41,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":shared:designsystem"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

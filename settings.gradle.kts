@@ -21,4 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "LearnApp"
 include(":app")
- 
+include(":shared:designsystem")
