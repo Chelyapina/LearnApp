@@ -1,7 +1,7 @@
 package com.example.learnapp.di
 
-import com.example.deck.di.DeckModule
 import com.example.learnapp.MainActivity
+import com.example.deck.di.DeckModule
 import dagger.Component
 import javax.inject.Singleton
 

@@ -1,4 +1,4 @@
-package com.example.learnapp
+package com.example.learnapp.preview
 
 import android.content.res.Configuration
 import androidx.annotation.VisibleForTesting
@@ -33,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.learnapp.R
 import com.example.designsystem.theme.LearnAppTheme
 
 @VisibleForTesting
@@ -83,7 +84,8 @@ fun ThemePreviewScreen() {
 
                 var login by remember { mutableStateOf("example@example.com") }
                 OutlinedTextField(
-                    value = login, onValueChange = { newValue -> login = newValue },
+                    value = login,
+                    onValueChange = { newValue -> login = newValue },
                     label = { Text(stringResource(R.string.login_hint)) },
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -95,10 +97,12 @@ fun ThemePreviewScreen() {
                         .background(
                             color = MaterialTheme.colorScheme.primaryContainer,
                             shape = MaterialTheme.shapes.medium
-                        ), contentAlignment = Alignment.Center
+                        ),
+                    contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        "PrimaryContainer", color = MaterialTheme.colorScheme.onPrimaryContainer
+                        "PrimaryContainer",
+                        color = MaterialTheme.colorScheme.onPrimaryContainer
                     )
                 }
 
@@ -109,7 +113,8 @@ fun ThemePreviewScreen() {
                         .background(
                             color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f),
                             shape = MaterialTheme.shapes.medium
-                        ), contentAlignment = Alignment.Center
+                        ),
+                    contentAlignment = Alignment.Center
                 ) {
                     Text(
                         "PrimaryContainer (alpha 0.5f)",
