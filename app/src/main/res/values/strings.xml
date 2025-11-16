@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">LearnApp</string>
 
+    // Preview
     <string name="display_large">Display Large</string>
     <string name="display_medium">Display Medium</string>
     <string name="display_small">Display Small</string>
@@ -9,5 +10,21 @@
     <string name="headline">Headline</string>
     <string name="supporting_text">Supporting text</string>
     <string name="login_hint">Login</string>
+    // Preview AppBar
+    <string name="preview_firstname">Анна</string>
 
+    // AppBar
+    <string name="description_icon_back">Назад</string>
+    <string name="description_icon_menu">Меню</string>
+    <string name="default_initial">\?</string>
+
+    // Authorization
+    <string name="login">Войти</string>
+    <string name="login_title">Вход</string>
+    <string name="password_title">Здравствуйте!</string>
+    <string name="login_subtitle">Введите почту, чтобы войти или зарегистрироваться</string>
+    <string name="login_textfield">Почта</string>
+    <string name="password_textfield">Пароль</string>
+    <string name="arrow_right">Продолжить</string>
+    <string name="error_state_preview">Не удалось загрузить слова. Проверьте подключение к интернету.</string>
 </resources>
