@@ -4,29 +4,42 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
-import com.example.deck.presentation.screen.DeckScreen
-import com.example.deck.presentation.viewmodel.DeckViewModel
-import com.example.deck.presentation.di.DeckViewModelFactory
-
-import com.example.designsystem.theme.LearnAppTheme
-import javax.inject.Inject
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import com.example.learnapp.ui.theme.LearnAppTheme
 
 class MainActivity : ComponentActivity() {
-    @Inject
-    lateinit var viewModelFactory: DeckViewModelFactory
-
-    private val viewModel: DeckViewModel by viewModels { viewModelFactory }
-
     override fun onCreate(savedInstanceState : Bundle?) {
-        (application as LearnApp).appComponent.inject(this)
-
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             LearnAppTheme {
-                DeckScreen(viewModel = viewModel)
+                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                    Greeting(
+                        name = "Android", modifier = Modifier.padding(innerPadding)
+                    )
+                }
             }
         }
+    }
+}
+
+@Composable
+fun Greeting(name : String, modifier : Modifier = Modifier) {
+    Text(
+        text = "Hello $name!", modifier = modifier
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun GreetingPreview() {
+    LearnAppTheme {
+        Greeting("Android")
     }
 }
