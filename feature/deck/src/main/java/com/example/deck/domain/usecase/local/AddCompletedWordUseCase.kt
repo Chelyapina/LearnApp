@@ -1,11 +1,11 @@
 package com.example.deck.domain.usecase.local
 
-import com.example.deck.data.CompletedDeckLocalDataSource
+import com.example.deck.domain.repository.DeckRepository
 import javax.inject.Inject
 
 class AddCompletedWordUseCase @Inject constructor(
-    private val completedDeckLocalDataSource : CompletedDeckLocalDataSource
+    private val repository : DeckRepository
 ) {
-    operator fun invoke(wordId : Int, status : Boolean) =
-            completedDeckLocalDataSource.addCompletedWord(wordId, status)
+    suspend operator fun invoke(wordId : Int, status : Boolean) =
+            repository.addToCompletedDeck(wordId, status)
 }
