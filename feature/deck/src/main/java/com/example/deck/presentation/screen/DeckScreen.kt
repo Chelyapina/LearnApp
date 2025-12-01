@@ -1,5 +1,6 @@
 package com.example.deck.presentation.screen
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.Scaffold
@@ -15,10 +16,12 @@ import com.example.deck.presentation.state.LoadingState
 import com.example.deck.presentation.viewmodel.DeckViewModel
 import com.example.designsystem.components.appbar.AppBarState
 import com.example.designsystem.components.appbar.CommonAppBar
+import com.example.navigation.AppNavigator
 
 @Composable
 fun DeckScreen(
-    viewModel : DeckViewModel
+    viewModel : DeckViewModel,
+    navigator: AppNavigator
 ) {
     val state by viewModel.state.collectAsState()
 
@@ -45,5 +48,9 @@ fun DeckScreen(
             is DeckScreenState.Error -> ErrorState(
                 errorMessage = "", onRetry = {})
         }
+    }
+
+    BackHandler {
+        navigator.exitApp()
     }
 }
