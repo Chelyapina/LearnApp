@@ -1,10 +1,10 @@
 package com.example.deck.domain.usecase.local
 
-import com.example.deck.data.CompletedDeckLocalDataSource
+import com.example.deck.domain.repository.DeckRepository
 import javax.inject.Inject
 
 class ShouldSendCompletedDeckUseCase @Inject constructor(
-    private val completedDeckLocalDataSource : CompletedDeckLocalDataSource
+    private val repository : DeckRepository
 ) {
-    operator fun invoke() : Boolean = completedDeckLocalDataSource.hasReachedLimit()
+    suspend operator fun invoke() : Boolean = repository.shouldSendCompletedDeck()
 }

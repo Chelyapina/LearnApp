@@ -1,11 +1,13 @@
-package com.example.deck.data
+package com.example.deck.data.repository
 
+import com.example.deck.data.datasource.CompletedDeckLocalDataSource
+import com.example.deck.data.datasource.DeckRemoteMockDataSource
 import com.example.deck.domain.entity.WordCard
 import com.example.deck.domain.entity.WordCompleted
 import com.example.deck.domain.repository.DeckRepository
 import javax.inject.Inject
 
-class DeckRepositoryImpl @Inject constructor(
+internal class DeckRepositoryImpl @Inject constructor(
     private val localDataSource : DeckRemoteMockDataSource,
     private val completedDeckLocalDataSource : CompletedDeckLocalDataSource
 ) : DeckRepository {
@@ -27,19 +29,14 @@ class DeckRepositoryImpl @Inject constructor(
         return result
     }
 
-    override fun getCompletedDeck() : List<WordCompleted> {
-        return completedDeckLocalDataSource.getCompletedDeck()
-    }
+    override suspend fun getCompletedDeck() : List<WordCompleted> =
+            completedDeckLocalDataSource.getCompletedDeck()
 
-    override fun clearCompletedDeck() {
-        completedDeckLocalDataSource.clearCompletedDeck()
-    }
+    override suspend fun clearCompletedDeck() = completedDeckLocalDataSource.clearCompletedDeck()
 
-    override fun addToCompletedDeck(wordId : Int, status : Boolean) {
-        completedDeckLocalDataSource.addCompletedWord(wordId, status)
-    }
+    override suspend fun addToCompletedDeck(wordId : Int, status : Boolean) =
+            completedDeckLocalDataSource.addCompletedWord(wordId, status)
 
-    override fun shouldSendCompletedDeck() : Boolean {
-        return completedDeckLocalDataSource.hasReachedLimit()
-    }
+    override suspend fun shouldSendCompletedDeck() : Boolean =
+            completedDeckLocalDataSource.hasReachedLimit()
 }

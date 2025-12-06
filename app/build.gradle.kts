@@ -42,6 +42,11 @@ android {
 
 dependencies {
     implementation(project(":feature:deck"))
+
+    implementation(project(":core:security"))
+    implementation(project(":core:storage"))
+    implementation(project(":core:di"))
+
     implementation(project(":shared:designsystem"))
 
     implementation(libs.androidx.core.ktx)

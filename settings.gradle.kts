@@ -22,4 +22,7 @@ dependencyResolutionManagement {
 rootProject.name = "LearnApp"
 include(":app")
 include(":feature:deck")
+include(":core:security")
 include(":shared:designsystem")
+include(":core:storage")
+include(":core:di")
