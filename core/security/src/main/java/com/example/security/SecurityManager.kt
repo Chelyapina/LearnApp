@@ -3,12 +3,13 @@ package com.example.security
 import android.content.Context
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
+import com.example.di.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class SecurityManager @Inject constructor(
-    private val context : Context
+    @ApplicationContext private val context : Context
 ) {
     private val masterKey : MasterKey by lazy {
         MasterKey.Builder(context).setKeyScheme(MasterKey.KeyScheme.AES256_GCM).build()

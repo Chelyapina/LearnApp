@@ -31,6 +31,8 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:di"))
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.security.crypto)
 

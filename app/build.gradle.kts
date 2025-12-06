@@ -45,6 +45,7 @@ dependencies {
 
     implementation(project(":core:security"))
     implementation(project(":core:storage"))
+    implementation(project(":core:di"))
 
     implementation(project(":shared:designsystem"))
 

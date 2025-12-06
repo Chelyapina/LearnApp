@@ -3,6 +3,7 @@ package com.example.storage.storage
 import android.content.Context
 import android.util.Log
 import androidx.core.content.edit
+import com.example.di.qualifiers.ApplicationContext
 import com.example.storage.model.WordCompletedStorage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -13,7 +14,7 @@ import javax.inject.Singleton
 
 @Singleton
 class CompletedDeckStorageImpl @Inject constructor(
-    private val context : Context
+    @ApplicationContext private val context : Context
 ) : CompletedDeckStorage {
 
     private val prefs by lazy {

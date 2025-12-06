@@ -1,12 +1,11 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
 }
 
 android {
-    namespace = "com.example.storage"
+    namespace = "com.example.di"
     compileSdk = 36
 
     defaultConfig {
@@ -32,12 +31,6 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:di"))
-
-    implementation(libs.androidx.core.ktx)
-
-    // Serialization
-    implementation(libs.kotlinx.serialization.json)
 
     // Dagger 2
     implementation(libs.dagger)
