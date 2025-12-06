@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.deck"
+    namespace = "com.example.authorization"
     compileSdk = 36
 
     defaultConfig {
@@ -29,20 +29,15 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
-    buildFeatures {
-        compose = true
-    }
 }
 
 dependencies {
-    implementation(project(":core:storage"))
     implementation(project(":core:navigation"))
 
     implementation(project(":shared:designsystem"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
-    implementation(libs.androidx.activity.compose)
     implementation(libs.material)
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.ui.tooling.preview)

@@ -1,0 +1,10 @@
+<resources>
+    // Authorization
+    <string name="login">Войти</string>
+    <string name="login_title">Вход</string>
+    <string name="password_title">Здравствуйте!</string>
+    <string name="login_subtitle">Введите почту, чтобы войти или зарегистрироваться</string>
+    <string name="login_textfield">Почта</string>
+    <string name="password_textfield">Пароль</string>
+    <string name="arrow_right">Продолжить</string>
+</resources>

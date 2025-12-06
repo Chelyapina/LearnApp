@@ -42,7 +42,9 @@ android {
 
 dependencies {
     implementation(project(":feature:deck"))
+    implementation(project(":feature:authorization"))
 
+    implementation(project(":core:navigation"))
     implementation(project(":core:security"))
     implementation(project(":core:storage"))
     implementation(project(":core:di"))
@@ -57,6 +59,7 @@ dependencies {
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
 
     // Dagger 2
     implementation(libs.dagger)

@@ -12,6 +12,7 @@ ksp = "2.0.21-1.0.26"
 dagger = "2.48"
 appcompat = "1.7.1"
 material = "1.13.0"
+lifecycleViewmodelCompose = "2.10.0"
 androidx-security-crypto = "1.1.0-alpha06"
 kotlinx-serialization = "1.6.0"
 
@@ -38,6 +39,8 @@ material = { group = "com.google.android.material", name = "material", version.r
 androidx-security-crypto = { group = "androidx.security", name = "security-crypto", version.ref = "androidx-security-crypto" }
 # serialization
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
+# viewmodel
+androidx-lifecycle-viewmodel-compose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "lifecycleViewmodelCompose" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
