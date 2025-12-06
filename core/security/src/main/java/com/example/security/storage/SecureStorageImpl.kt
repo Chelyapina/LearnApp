@@ -1,6 +1,8 @@
 package com.example.security.storage
 
+import android.content.SharedPreferences
 import android.util.Log
+import androidx.core.content.edit
 import com.example.security.SecurityConstants
 import com.example.security.SecurityManager
 import kotlinx.coroutines.Dispatchers
@@ -11,13 +13,13 @@ class SecureStorageImpl @Inject constructor(
     private val securityManager : SecurityManager
 ) : SecureStorage {
 
-    private val prefs by lazy {
+    private val prefs : SharedPreferences by lazy {
         securityManager.createEncryptedSharedPreferences(SecurityConstants.AUTH_SECURE_PREFS_NAME)
     }
 
     override suspend fun saveToken(token : String) = withContext(Dispatchers.IO) {
         try {
-            prefs.edit().putString(SecurityConstants.KEY_AUTH_TOKEN, token).apply()
+            prefs.edit { putString(SecurityConstants.KEY_AUTH_TOKEN, token) }
         } catch (e : Exception) {
             Log.e(ErrorMessages.TAG, ErrorMessages.SAVE_TOKEN_ERROR, e)
             throw e
@@ -35,7 +37,7 @@ class SecureStorageImpl @Inject constructor(
 
     override suspend fun clearToken() = withContext(Dispatchers.IO) {
         try {
-            prefs.edit().remove(SecurityConstants.KEY_AUTH_TOKEN).apply()
+            prefs.edit { remove(SecurityConstants.KEY_AUTH_TOKEN) }
         } catch (e : Exception) {
             Log.e(ErrorMessages.TAG, ErrorMessages.CLEAR_TOKEN_ERROR, e)
             throw e
