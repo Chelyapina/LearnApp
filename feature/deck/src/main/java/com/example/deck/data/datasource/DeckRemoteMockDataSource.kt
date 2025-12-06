@@ -1,4 +1,4 @@
-package com.example.deck.data
+package com.example.deck.data.datasource
 
 import android.util.Log
 import com.example.deck.domain.entity.CompletedDeck

@@ -45,6 +45,9 @@ dependencies {
     implementation(project(":feature:authorization"))
 
     implementation(project(":core:navigation"))
+    implementation(project(":core:security"))
+    implementation(project(":core:storage"))
+    implementation(project(":core:di"))
 
     implementation(project(":shared:designsystem"))
 

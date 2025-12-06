@@ -1,10 +1,10 @@
 package com.example.deck.domain.usecase.local
 
-import com.example.deck.data.CompletedDeckLocalDataSource
+import com.example.deck.domain.repository.DeckRepository
 import javax.inject.Inject
 
 class ClearCompletedDeckUseCase @Inject constructor(
-    private val completedDeckLocalDataSource : CompletedDeckLocalDataSource
+    private val repository : DeckRepository
 ) {
-    operator fun invoke() = completedDeckLocalDataSource.clearCompletedDeck()
+    suspend operator fun invoke() = repository.clearCompletedDeck()
 }

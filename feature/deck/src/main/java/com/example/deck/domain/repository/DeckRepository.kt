@@ -7,8 +7,8 @@ interface DeckRepository {
     suspend fun getLearnDeck() : List<WordCard>
     suspend fun getRepeatDeck() : List<WordCard>
     suspend fun setDeck(completedDeck : List<WordCompleted>) : Boolean
-    fun getCompletedDeck(): List<WordCompleted>
-    fun clearCompletedDeck()
-    fun addToCompletedDeck(wordId : Int, status : Boolean)
-    fun shouldSendCompletedDeck(): Boolean
+    suspend fun getCompletedDeck() : List<WordCompleted>
+    suspend fun clearCompletedDeck()
+    suspend fun addToCompletedDeck(wordId : Int, status : Boolean)
+    suspend fun shouldSendCompletedDeck() : Boolean
 }

@@ -76,28 +76,26 @@ class DeckViewModel @Inject constructor(
     }
 
     fun markWordAsKnown(wordId : Int) {
-        addCompletedWordUseCase(wordId, true)
-
-        if (shouldSendCompletedDeckUseCase()) {
-            viewModelScope.launch {
+        viewModelScope.launch {
+            addCompletedWordUseCase(wordId, true)
+            if (shouldSendCompletedDeckUseCase()) {
                 setCompletedDeckUseCase(getCompletedDeckUseCase())
                 clearCompletedDeckUseCase()
+            } else {
+                moveToNextCard()
             }
-        } else {
-            moveToNextCard()
         }
     }
 
     fun markWordAsForgotten(wordId : Int) {
-        addCompletedWordUseCase(wordId, false)
-
-        if (shouldSendCompletedDeckUseCase()) {
-            viewModelScope.launch {
+        viewModelScope.launch {
+            addCompletedWordUseCase(wordId, false)
+            if (shouldSendCompletedDeckUseCase()) {
                 setCompletedDeckUseCase(getCompletedDeckUseCase())
                 clearCompletedDeckUseCase()
+            } else {
+                moveToNextCard()
             }
-        } else {
-            moveToNextCard()
         }
     }
 

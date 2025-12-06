@@ -1,4 +1,4 @@
-package com.example.deck.di
+package com.example.di.qualifiers
 
 import javax.inject.Qualifier
 
