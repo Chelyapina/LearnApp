@@ -1,7 +1,9 @@
 package com.example.security.storage
 
 interface SecureStorage {
-    suspend fun saveToken(token: String)
     suspend fun getToken(): String?
-    suspend fun clearToken()
+    suspend fun getUserName(): String?
+    suspend fun saveUserData(userName: String, token: String)
+    suspend fun clearUserData()
+    suspend fun hasUserData(): Boolean
 }

@@ -17,15 +17,6 @@ class SecureStorageImpl @Inject constructor(
         securityManager.createEncryptedSharedPreferences(SecurityConstants.AUTH_SECURE_PREFS_NAME)
     }
 
-    override suspend fun saveToken(token : String) = withContext(Dispatchers.IO) {
-        try {
-            prefs.edit { putString(SecurityConstants.KEY_AUTH_TOKEN, token) }
-        } catch (e : Exception) {
-            Log.e(ErrorMessages.TAG, ErrorMessages.SAVE_TOKEN_ERROR, e)
-            throw e
-        }
-    }
-
     override suspend fun getToken() : String? = withContext(Dispatchers.IO) {
         try {
             prefs.getString(SecurityConstants.KEY_AUTH_TOKEN, null)
@@ -35,21 +26,59 @@ class SecureStorageImpl @Inject constructor(
         }
     }
 
-    override suspend fun clearToken() = withContext(Dispatchers.IO) {
+    override suspend fun getUserName() : String? = withContext(Dispatchers.IO) {
         try {
-            prefs.edit { remove(SecurityConstants.KEY_AUTH_TOKEN) }
+            prefs.getString(SecurityConstants.KEY_USER_NAME, null)
         } catch (e : Exception) {
-            Log.e(ErrorMessages.TAG, ErrorMessages.CLEAR_TOKEN_ERROR, e)
+            Log.e(ErrorMessages.TAG, ErrorMessages.GET_USER_NAME_ERROR, e)
+            null
+        }
+    }
+
+    override suspend fun saveUserData(userName : String, token : String) =
+            withContext(Dispatchers.IO) {
+                try {
+                    prefs.edit {
+                        putString(SecurityConstants.KEY_USER_NAME, userName)
+                        putString(SecurityConstants.KEY_AUTH_TOKEN, token)
+                    }
+                } catch (e : Exception) {
+                    Log.e(ErrorMessages.TAG, ErrorMessages.SAVE_USER_DATA_ERROR, e)
+                    throw e
+                }
+            }
+
+    override suspend fun clearUserData() = withContext(Dispatchers.IO) {
+        try {
+            prefs.edit {
+                remove(SecurityConstants.KEY_USER_NAME)
+                remove(SecurityConstants.KEY_AUTH_TOKEN)
+            }
+        } catch (e : Exception) {
+            Log.e(ErrorMessages.TAG, ErrorMessages.CLEAR_USER_DATA_ERROR, e)
             throw e
+        }
+    }
+
+    override suspend fun hasUserData() : Boolean = withContext(Dispatchers.IO) {
+        try {
+            val userName = prefs.getString(SecurityConstants.KEY_USER_NAME, null)
+            val token = prefs.getString(SecurityConstants.KEY_AUTH_TOKEN, null)
+            !userName.isNullOrEmpty() && !token.isNullOrEmpty()
+        } catch (e : Exception) {
+            Log.e(ErrorMessages.TAG, ErrorMessages.CHECK_USER_DATA_ERROR, e)
+            false
         }
     }
 
     companion object {
         private object ErrorMessages {
             const val TAG = "SecureStorage"
-            const val SAVE_TOKEN_ERROR = "Error saving token"
             const val GET_TOKEN_ERROR = "Error getting token"
-            const val CLEAR_TOKEN_ERROR = "Error clearing token"
+            const val GET_USER_NAME_ERROR = "Error getting user name"
+            const val SAVE_USER_DATA_ERROR = "Error saving user data"
+            const val CLEAR_USER_DATA_ERROR = "Error clearing user data"
+            const val CHECK_USER_DATA_ERROR = "Error checking user data"
         }
     }
 }
