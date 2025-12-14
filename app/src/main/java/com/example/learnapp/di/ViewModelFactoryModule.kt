@@ -6,6 +6,8 @@ import com.example.authorization.presentation.di.AuthViewModelFactory
 import com.example.authorization.presentation.viewmodel.AuthViewModel
 import com.example.deck.presentation.di.DeckViewModelFactory
 import com.example.deck.presentation.viewmodel.DeckViewModel
+import com.example.navigation.splash.presentation.SplashViewModel
+import com.example.navigation.splash.presentation.SplashViewModelFactory
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -16,7 +18,9 @@ object ViewModelFactoryModule {
     @Provides
     @Singleton
     fun provideViewModelFactory(
-        authViewModelFactory : AuthViewModelFactory, deckViewModelFactory : DeckViewModelFactory
+        authViewModelFactory : AuthViewModelFactory,
+        deckViewModelFactory : DeckViewModelFactory,
+        splashViewModelFactory : SplashViewModelFactory
     ) : ViewModelProvider.Factory {
         return object : ViewModelProvider.Factory {
             @Suppress("UNCHECKED_CAST")
@@ -30,8 +34,12 @@ object ViewModelFactoryModule {
                         deckViewModelFactory.create(modelClass)
                     }
 
+                    modelClass.isAssignableFrom(SplashViewModel::class.java) -> {
+                        splashViewModelFactory.create()
+                    }
+
                     else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
-                }
+                } as T
             }
         }
     }
