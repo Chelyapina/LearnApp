@@ -1,46 +1,68 @@
 package com.example.authorization.data
 
-import android.util.Log
+import com.example.authorization.data.converter.TokenConverter
+import com.example.authorization.data.datasource.AuthLocalDataSource
+import com.example.authorization.data.datasource.AuthRemoteDataSource
+import com.example.authorization.data.utils.AuthConstants
 import com.example.authorization.domain.entity.Auth
 import com.example.authorization.domain.entity.Token
+import com.example.authorization.domain.entity.User
 import com.example.authorization.domain.exception.AuthException
 import com.example.authorization.domain.repository.AuthRepository
+import com.example.network.exception.NetworkException
 import javax.inject.Inject
 
-internal class AuthRepositoryImpl @Inject constructor() : AuthRepository {
+internal class AuthRepositoryImpl @Inject constructor(
+    private val remoteDataSource : AuthRemoteDataSource,
+    private val localDataSource : AuthLocalDataSource
+) : AuthRepository {
 
-    override suspend fun login(credentials : Auth) : Token {
-        Log.d(AuthConstants.TAG, "Attempting login for user: ${credentials.login}")
+    override suspend fun login(credentials : Auth) : User {
+        try {
+            val response = remoteDataSource.login(
+                username = credentials.login, password = credentials.password
+            )
 
-        val isValid =
-                credentials.login == AuthConstants.TEST_LOGIN && credentials.password == AuthConstants.TEST_PASSWORD
+            val user = TokenConverter.convertToDomain(response)
+            return user
 
-        return if (isValid) {
-            val token = Token("auth_token_${System.currentTimeMillis()}")
-            Log.i(AuthConstants.TAG, "Login successful for ${credentials.login}")
-            token
-        } else {
-            Log.w(AuthConstants.TAG, "Login failed: Invalid credentials")
-            throw AuthException(AuthConstants.INVALID_CREDENTIALS)
+        } catch (e : NetworkException) {
+            when (e) {
+                is NetworkException.UnauthorizedError -> {
+                    throw AuthException(AuthConstants.INVALID_CREDENTIALS)
+                }
+
+                is NetworkException.NetworkError -> {
+                    throw AuthException(AuthConstants.NETWORK_ERROR)
+                }
+
+                is NetworkException.TimeoutError -> {
+                    throw AuthException(AuthConstants.TIMEOUT_ERROR)
+                }
+
+                else -> {
+                    throw AuthException(AuthConstants.SERVER_ERROR)
+                }
+            }
+        } catch (_ : Exception) {
+            throw AuthException(AuthConstants.UNKNOWN_ERROR)
         }
     }
 
-    private var storedToken : Token? = null
+    override suspend fun saveUser(user : User) {
+        try {
+            localDataSource.saveUserData(user)
+        } catch (_ : Exception) {
+            throw AuthException(AuthConstants.TOKEN_SAVE_ERROR)
+        }
+    }
 
     override suspend fun getToken() : Token? {
-        Log.d(AuthConstants.TAG, "Getting token: ${storedToken?.toString() ?: "null"}")
-        return storedToken
+        return try {
+            val tokenValue = localDataSource.getToken()
+            tokenValue?.let { Token(it) }
+        } catch (_ : Exception) {
+            throw AuthException(AuthConstants.TOKEN_READ_ERROR)
+        }
     }
-
-    override suspend fun saveToken(token : Token) {
-        Log.i(AuthConstants.TAG, "Token saved")
-        storedToken = token
-    }
-}
-
-object AuthConstants {
-    const val TAG = "Auth"
-    const val TEST_LOGIN = "user@test.com"
-    const val TEST_PASSWORD = "0000"
-    const val INVALID_CREDENTIALS = "Invalid email or password"
 }

@@ -3,8 +3,11 @@
     <string name="login">Войти</string>
     <string name="login_title">Вход</string>
     <string name="password_title">Здравствуйте!</string>
-    <string name="login_subtitle">Введите почту, чтобы войти или зарегистрироваться</string>
-    <string name="login_textfield">Почта</string>
+    <string name="login_subtitle">Введите логин, чтобы войти или зарегистрироваться</string>
+    <string name="login_textfield">Логин</string>
     <string name="password_textfield">Пароль</string>
     <string name="arrow_right">Продолжить</string>
+    <string name="load_word">Загрузка…</string>
+    <string name="visible_password">Скрыть пароль</string>
+    <string name="no_visible_password">Показать пароль</string>
 </resources>

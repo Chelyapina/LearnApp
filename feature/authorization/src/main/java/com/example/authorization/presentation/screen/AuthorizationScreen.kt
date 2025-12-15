@@ -1,83 +1,105 @@
 package com.example.authorization.presentation.screen
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
-import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.authorization.presentation.model.AlertData
-import com.example.authorization.presentation.state.AuthScreenState
+import androidx.compose.ui.unit.dp
+import com.example.authorization.R
+import com.example.authorization.presentation.state.AuthEvent
+import com.example.authorization.presentation.state.AuthScreen
+import com.example.authorization.presentation.state.AuthUiState
 import com.example.authorization.presentation.viewmodel.AuthViewModel
 import com.example.designsystem.components.appbar.AppBarState
 import com.example.designsystem.components.appbar.CommonAppBar
-import com.example.navigation.AppNavigator
+import com.example.designsystem.components.loading.LoadingScreen
+import com.example.designsystem.state.AlertConfig
+import com.example.designsystem.state.LoadingState
+import com.example.designsystem.state.getConfirmText
+import com.example.designsystem.state.getMessage
+import com.example.designsystem.state.getTitle
 
 @Composable
 fun AuthorizationScreen(
-    viewModel : AuthViewModel, navigator : AppNavigator
+    viewModel : AuthViewModel, uiState : AuthUiState
 ) {
-    val screenState by viewModel.screenState.collectAsState()
-    val isLoading by viewModel.isLoading.collectAsState()
-    val alertData by viewModel.showAlert.collectAsStateWithLifecycle(initialValue = null)
-    var currentAlert by remember { mutableStateOf<AlertData?>(null) }
-
-    LaunchedEffect(alertData) {
-        alertData?.let {
-            currentAlert = it
-        }
+    BackHandler(enabled = true) {
+        viewModel.handleEvent(AuthEvent.BackPressed)
     }
 
-    if (isLoading) {
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            CircularProgressIndicator()
-        }
-    } else {
+    Box(
+        modifier = Modifier.fillMaxSize()
+    ) {
         AuthorizationScreenContent(
-            state = screenState,
-            onBackClick = { viewModel.onBackClick(navigator) },
-            onLoginSubmit = viewModel::onLoginSubmit,
-            onPasswordSubmit = { email, password ->
-                viewModel.onPasswordSubmit(email, password, navigator)
-            })
+            viewModel = viewModel, uiState = uiState
+        )
+
+        when (uiState.isLoading) {
+            is LoadingState.Loading -> {
+                LoadingScreen(
+                    modifier = Modifier.fillMaxSize(), text = R.string.load_word
+                )
+            }
+
+            else -> {}
+        }
     }
-    AuthAlertDialog(
-        alertData = currentAlert, onDismiss = { currentAlert = null })
+
+    uiState.alertData?.let { alertData ->
+        val alertConfig = when (val loadingState = uiState.isLoading) {
+            is LoadingState.Error -> loadingState.error.toAlertConfig()
+            else -> AlertConfig.GenericError
+        }
+
+        AlertDialog(
+            onDismissRequest = { viewModel.handleEvent(AuthEvent.AlertHandled) }, title = {
+            Text(text = alertConfig.getTitle())
+        }, text = {
+            Text(text = alertConfig.getMessage())
+        }, confirmButton = {
+            Button(
+                onClick = alertData.onConfirm, colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.primary
+                )
+            ) {
+                Text(text = alertConfig.getConfirmText())
+            }
+        }, dismissButton = null, shape = RoundedCornerShape(12.dp)
+        )
+    }
 }
 
 @Composable
 fun AuthorizationScreenContent(
-    modifier : Modifier = Modifier,
-    state : AuthScreenState,
-    onBackClick : () -> Unit = {},
-    onLoginSubmit : (email : String) -> Unit = { _ -> },
-    onPasswordSubmit : (email : String, password : String) -> Unit = { _, _ -> },
+    modifier : Modifier = Modifier, viewModel : AuthViewModel, uiState : AuthUiState
 ) {
     Scaffold(
         topBar = {
             CommonAppBar(
-                state = when (state) {
-                    is AuthScreenState.Login -> AppBarState.Empty
-                    is AuthScreenState.Password -> AppBarState.Back
-                }, onBackClick = onBackClick
+                state = when (uiState.screen) {
+                    is AuthScreen.Login -> AppBarState.Empty
+                    is AuthScreen.Password -> AppBarState.Back
+                }, onBackClick = { viewModel.handleEvent(AuthEvent.BackPressed) }
             )
         }, modifier = modifier.systemBarsPadding()
     ) { paddingValues ->
         AuthorizationContent(
-            state = state,
-            onLoginSubmit = onLoginSubmit,
-            onPasswordSubmit = onPasswordSubmit,
-            modifier = modifier.padding(paddingValues)
+            uiState = uiState,
+            onEvent = viewModel::handleEvent,
+            onTogglePasswordVisibility = { viewModel.togglePasswordVisibility() },
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
         )
     }
 }
