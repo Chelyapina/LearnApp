@@ -1,9 +1,8 @@
-package com.example.deck.presentation.state
+package com.example.deck.presentation.screen
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -22,13 +21,13 @@ import androidx.compose.ui.unit.dp
 import com.example.deck.R
 
 @Composable
-fun ErrorState(
+fun ErrorDeckScreen(
+    modifier : Modifier = Modifier,
     errorMessage: String,
     onRetry: () -> Unit
 ) {
     Box(
-        modifier = Modifier
-            .fillMaxSize()
+        modifier = modifier
             .padding(16.dp),
         contentAlignment = Alignment.Center
     ) {

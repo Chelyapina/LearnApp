@@ -1,7 +1,7 @@
 package com.example.navigation
 
 import androidx.navigation.NavController
-import com.example.deck.presentation.screen.DeckNavigation
+import com.example.deck.presentation.navigation.DeckNavigation
 
 class DeckNavigationImpl(
     private val navController : NavController, private val onExitApp : () -> Unit

@@ -5,10 +5,12 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.deck.domain.usecase.local.AddCompletedWordUseCase
 import com.example.deck.domain.usecase.local.ClearCompletedDeckUseCase
 import com.example.deck.domain.usecase.local.GetCompletedDeckUseCase
+import com.example.deck.domain.usecase.local.GetCurrentUserUseCase
+import com.example.deck.domain.usecase.local.LogOutUseCase
+import com.example.deck.domain.usecase.local.ShouldSendCompletedDeckUseCase
 import com.example.deck.domain.usecase.remote.GetLearnDeckUseCase
 import com.example.deck.domain.usecase.remote.GetRepeatDeckUseCase
 import com.example.deck.domain.usecase.remote.SetCompletedDeckUseCase
-import com.example.deck.domain.usecase.local.ShouldSendCompletedDeckUseCase
 import com.example.deck.presentation.viewmodel.DeckViewModel
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -21,7 +23,9 @@ class DeckViewModelFactory @Inject constructor(
     private val addCompletedWordUseCase : AddCompletedWordUseCase,
     private val shouldSendCompletedDeckUseCase : ShouldSendCompletedDeckUseCase,
     private val getCompletedDeckUseCase : GetCompletedDeckUseCase,
-    private val clearCompletedDeckUseCase : ClearCompletedDeckUseCase
+    private val clearCompletedDeckUseCase : ClearCompletedDeckUseCase,
+    private val logOutUseCase : LogOutUseCase,
+    private val getCurrentUserUseCase : GetCurrentUserUseCase
 ) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass : Class<T>) : T {
@@ -33,7 +37,10 @@ class DeckViewModelFactory @Inject constructor(
                 addCompletedWordUseCase = addCompletedWordUseCase,
                 shouldSendCompletedDeckUseCase = shouldSendCompletedDeckUseCase,
                 getCompletedDeckUseCase = getCompletedDeckUseCase,
-                clearCompletedDeckUseCase = clearCompletedDeckUseCase
+                clearCompletedDeckUseCase = clearCompletedDeckUseCase,
+                logOutUseCase = logOutUseCase,
+                getCurrentUserUseCase = getCurrentUserUseCase
+
             ) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
