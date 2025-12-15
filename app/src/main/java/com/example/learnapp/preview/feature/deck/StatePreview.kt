@@ -5,8 +5,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.deck.presentation.components.EmptyDeck
-import com.example.deck.presentation.state.ErrorState
-import com.example.deck.presentation.state.LoadingState
+import com.example.deck.presentation.screen.ErrorDeckScreen
+import com.example.designsystem.components.loading.LoadingScreen
 import com.example.designsystem.theme.LearnAppTheme
 import com.example.learnapp.R
 
@@ -15,7 +15,7 @@ import com.example.learnapp.R
 @Composable
 fun ErrorStatePreview() {
     LearnAppTheme {
-        ErrorState(
+        ErrorDeckScreen(
             errorMessage = stringResource(R.string.error_state_preview), onRetry = {})
     }
 }
@@ -25,7 +25,7 @@ fun ErrorStatePreview() {
 @Composable
 fun LoadingStatePreview() {
     LearnAppTheme {
-        LoadingState()
+        LoadingScreen(text = R.string.loading_state_preview)
     }
 }
 
