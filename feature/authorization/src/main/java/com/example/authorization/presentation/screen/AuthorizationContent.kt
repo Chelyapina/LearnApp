@@ -135,7 +135,6 @@ private fun PasswordTextField(
     label : String,
     modifier : Modifier = Modifier
 ) {
-
     AuthorizationTextField(
         value = password,
         onValueChange = onPasswordChanged,
@@ -205,22 +204,13 @@ private fun AuthorizationTextField(
                 trailingIcon = trailingIcon,
                 singleLine = true,
                 isError = error != null,
-                supportingText = {
-                    if (error != null) {
-                        Text(
-                            text = error,
-                            color = MaterialTheme.colorScheme.error,
-                            style = MaterialTheme.typography.bodySmall
-                        )
-                    }
-                }
             )
         }
 
         Spacer(modifier = Modifier.width(16.dp))
 
         Row(
-            modifier = Modifier.padding(bottom = 9.dp),
+            modifier = Modifier.padding(top = 6.dp),
         ) {
             FilledIconButton(
                 onClick = onSubmit,
@@ -241,5 +231,16 @@ private fun AuthorizationTextField(
                 )
             }
         }
+    }
+
+    if (error != null) {
+        Text(
+            modifier = Modifier
+                .padding(start = 12.dp, top = 4.dp)
+                .fillMaxWidth(),
+            text = error,
+            color = MaterialTheme.colorScheme.error,
+            style = MaterialTheme.typography.bodySmall
+        )
     }
 }
