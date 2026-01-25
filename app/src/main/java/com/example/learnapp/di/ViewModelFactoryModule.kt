@@ -6,8 +6,8 @@ import com.example.authorization.presentation.di.AuthViewModelFactory
 import com.example.authorization.presentation.viewmodel.AuthViewModel
 import com.example.deck.presentation.di.DeckViewModelFactory
 import com.example.deck.presentation.viewmodel.DeckViewModel
-import com.example.navigation.splash.presentation.SplashViewModel
-import com.example.navigation.splash.presentation.SplashViewModelFactory
+import com.example.splash.di.SplashViewModelFactory
+import com.example.splash.presentation.SplashViewModel
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

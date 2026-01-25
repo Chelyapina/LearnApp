@@ -15,7 +15,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.authorization.presentation.navigation.AuthorizationDestination
 import com.example.deck.presentation.navigation.DeckDestination
-import com.example.navigation.splash.presentation.SplashViewModel
+import com.example.splash.presentation.SplashViewModel
 
 @Composable
 fun LearnAppNavigation(

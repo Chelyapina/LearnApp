@@ -1,15 +1,12 @@
-package com.example.navigation.splash.presentation
+package com.example.splash.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.navigation.splash.data.SplashRepository
-import dagger.Module
-import dagger.Provides
+import com.example.splash.data.SplashRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import javax.inject.Singleton
 
 class SplashViewModel @Inject constructor(
     private val repository : SplashRepository
@@ -44,24 +41,5 @@ class SplashViewModel @Inject constructor(
         object Authenticated : AuthState()
         object Unauthenticated : AuthState()
         data class Error(val message : String) : AuthState()
-    }
-}
-
-@Module
-object SplashModule {
-    @Provides
-    @Singleton
-    fun provideSplashViewModelFactory(
-        repository : SplashRepository
-    ) : SplashViewModelFactory {
-        return SplashViewModelFactory(repository)
-    }
-}
-
-class SplashViewModelFactory @Inject constructor(
-    private val repository : SplashRepository
-) {
-    fun create() : SplashViewModel {
-        return SplashViewModel(repository)
     }
 }

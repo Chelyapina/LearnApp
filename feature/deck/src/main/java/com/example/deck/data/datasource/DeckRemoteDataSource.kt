@@ -3,7 +3,6 @@ package com.example.deck.data.datasource
 import com.example.network.ApiService
 import com.example.network.exception.ExceptionMapper
 import com.example.network.exception.NetworkException
-import com.example.network.modelDto.CompletedDeckDto
 import com.example.network.modelDto.WordCardDto
 import com.example.network.modelDto.WordCompletedDto
 import javax.inject.Inject
@@ -51,8 +50,7 @@ internal class DeckRemoteDataSource @Inject constructor(
     suspend fun saveCompletedDeck(completedWords : List<WordCompletedDto>) : Boolean {
         return try {
             val token = getAuthToken()
-            val completedDeck = CompletedDeckDto(completedWords)
-            val response = deckApiService.saveCompletedDeck("Bearer $token", completedDeck)
+            val response = deckApiService.saveCompletedDeck("Bearer $token", completedWords)
 
             if (response.isSuccessful) {
                 true

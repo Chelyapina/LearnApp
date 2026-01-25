@@ -1,4 +1,4 @@
-package com.example.navigation.splash.data
+package com.example.splash.data
 
 import com.example.security.storage.SecureStorage
 import javax.inject.Inject

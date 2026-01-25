@@ -6,15 +6,16 @@ plugins {
 }
 
 android {
-    namespace = "com.example.navigation"
-    compileSdk = 36
-
-    buildFeatures {
-        compose = true
+    namespace = "com.example.splash"
+    compileSdk {
+        version = release(36)
     }
 
     defaultConfig {
         minSdk = 24
+
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
@@ -36,18 +37,20 @@ android {
 }
 
 dependencies {
-    implementation(project(":feature:splash"))
-    implementation(project(":feature:deck"))
-    implementation(project(":feature:authorization"))
     implementation(project(":core:security"))
 
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.material)
+    implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.lifecycle.viewmodel.compose)
     implementation (libs.androidx.compose.runtime)
     implementation (libs.androidx.compose.runtime.livedata)
+    implementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.compose.material3)
 
     // Dagger 2
     implementation(libs.dagger)
     ksp(libs.dagger.ksp)
-
-    implementation(libs.androidx.navigation.compose)
 }

@@ -1,9 +1,9 @@
 package com.example.network
 
 import com.example.network.modelDto.AuthResponseDto
-import com.example.network.modelDto.CompletedDeckDto
 import com.example.network.modelDto.LoginRequestDto
 import com.example.network.modelDto.WordCardDto
+import com.example.network.modelDto.WordCompletedDto
 import com.example.network.utils.NetworkConstants
 import retrofit2.Response
 import retrofit2.http.Body
@@ -28,7 +28,6 @@ interface ApiService {
 
     @PATCH(NetworkConstants.COMPLETED_WORDS)
     suspend fun saveCompletedDeck(
-        @Header("Authorization") token: String,
-        @Body completedDeck: CompletedDeckDto
+        @Header("Authorization") token: String, @Body completedDeck : List<WordCompletedDto>
     ): Response<Unit>
 }
