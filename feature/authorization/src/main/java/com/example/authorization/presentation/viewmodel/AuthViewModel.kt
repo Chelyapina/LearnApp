@@ -3,7 +3,7 @@ package com.example.authorization.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.authorization.domain.entity.Auth
-import com.example.authorization.domain.usecase.ScenarioLogin
+import com.example.authorization.domain.usecase.ScenarioLoginUseCase
 import com.example.authorization.presentation.state.AuthEvent
 import com.example.authorization.presentation.state.AuthNavigationEvent
 import com.example.authorization.presentation.state.AuthScreen
@@ -23,7 +23,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class AuthViewModel @Inject constructor(
-    private val scenarioLogin : ScenarioLogin
+    private val scenarioLoginUseCase : ScenarioLoginUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(AuthUiState(isLoading = LoadingState.Idle))
@@ -36,10 +36,10 @@ class AuthViewModel @Inject constructor(
         when (event) {
             is AuthEvent.EmailChanged -> updateEmail(event.email)
             is AuthEvent.PasswordChanged -> updatePassword(event.password)
-            AuthEvent.SubmitLogin -> submitLogin()
-            AuthEvent.SubmitPassword -> submitPassword()
-            AuthEvent.BackPressed -> handleBackPressed()
-            AuthEvent.AlertHandled -> handleAlertDismissed()
+            is AuthEvent.SubmitLogin -> submitLogin()
+            is AuthEvent.SubmitPassword -> submitPassword()
+            is AuthEvent.BackPressed -> handleBackPressed()
+            is AuthEvent.AlertHandled -> handleAlertDismissed()
         }
     }
 
@@ -112,17 +112,17 @@ class AuthViewModel @Inject constructor(
                         login = email, password = password
                     )
 
-                    val result = scenarioLogin(credentials)
+                    val result = scenarioLoginUseCase(credentials)
 
                     when (result) {
-                        is ScenarioLogin.Result.Success -> {
+                        is ScenarioLoginUseCase.Result.Success -> {
                             _uiState.update { state ->
                                 state.copy(isLoading = LoadingState.Success)
                             }
                             _navigationEvent.emit(AuthNavigationEvent.NavigateToMain)
                         }
 
-                        is ScenarioLogin.Result.Error -> {
+                        is ScenarioLoginUseCase.Result.Error -> {
                             handleLoginError(result.error)
                         }
                     }

@@ -6,7 +6,7 @@ import com.example.authorization.domain.exception.AuthException
 import com.example.designsystem.state.LoadError
 import javax.inject.Inject
 
-class ScenarioLogin @Inject constructor(
+class ScenarioLoginUseCase @Inject constructor(
     private val loginUseCase : LoginUseCase, private val saveUserUseCase : SaveUserUseCase
 ) {
     sealed interface Result {

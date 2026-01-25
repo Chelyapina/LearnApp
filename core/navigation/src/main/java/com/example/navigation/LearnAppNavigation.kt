@@ -31,22 +31,17 @@ fun LearnAppNavigation(
 
     LaunchedEffect(authState) {
         when (authState) {
-            SplashViewModel.AuthState.Authenticated -> {
+            is SplashViewModel.AuthState.Authenticated -> {
                 navController.navigate("main") {
                     popUpTo("splash") { inclusive = true }
                 }
             }
 
-            SplashViewModel.AuthState.Unauthenticated -> {
-                navController.navigate("auth") {
-                    popUpTo("splash") { inclusive = true }
-                }
+            is SplashViewModel.AuthState.Loading -> {
+                // Перехода нет тк загрузка осуществляется на SplashScreen
             }
 
-            SplashViewModel.AuthState.Loading -> {
-            }
-
-            is SplashViewModel.AuthState.Error -> {
+            is SplashViewModel.AuthState.Error, is SplashViewModel.AuthState.Unauthenticated -> {
                 navController.navigate("auth") {
                     popUpTo("splash") { inclusive = true }
                 }
@@ -55,8 +50,22 @@ fun LearnAppNavigation(
     }
 
     BackHandler(enabled = true) {
-        when (navController.currentDestination?.route) {
-            "auth" -> onExitApp()
+        val currentDestination = navController.currentDestination?.route
+        val backStack = navController.currentBackStack.value
+
+        val hasPreviousScreen = backStack.any {
+            it.destination.route != currentDestination
+        }
+
+        when (currentDestination) {
+            "auth" -> {
+                if (hasPreviousScreen) {
+                    navController.popBackStack()
+                } else {
+                    onExitApp()
+                }
+            }
+
             "main" -> {
                 navController.navigate("auth") {
                     popUpTo("main") { inclusive = true }
@@ -64,7 +73,11 @@ fun LearnAppNavigation(
             }
 
             else -> {
-                if (!navController.popBackStack()) onExitApp()
+                if (hasPreviousScreen) {
+                    navController.popBackStack()
+                } else {
+                    onExitApp()
+                }
             }
         }
     }
