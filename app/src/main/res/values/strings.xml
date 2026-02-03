@@ -18,5 +18,6 @@
     <string name="description_icon_menu">Меню</string>
     <string name="default_initial">\?</string>
 
+    <string name="loading_state_preview">Загрузка</string>
     <string name="error_state_preview">Не удалось загрузить слова. Проверьте подключение к интернету.</string>
 </resources>

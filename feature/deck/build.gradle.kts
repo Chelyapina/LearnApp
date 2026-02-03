@@ -36,7 +36,8 @@ android {
 
 dependencies {
     implementation(project(":core:storage"))
-    implementation(project(":core:navigation"))
+    implementation(project(":core:network"))
+    implementation(project(":core:security"))
 
     implementation(project(":shared:designsystem"))
 
@@ -46,9 +47,13 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.ui.tooling.preview)
-    implementation(libs.androidx.compose.material3)
     implementation(platform(libs.androidx.compose.bom))
+    implementation (libs.androidx.compose.runtime)
+    implementation (libs.androidx.compose.runtime.livedata)
     implementation(libs.androidx.compose.material3)
+    implementation(libs.lifecycle.viewmodel.compose)
+
+    implementation(libs.retrofit.kotlinx.serialization)
 
     // Dagger 2
     implementation(libs.dagger)

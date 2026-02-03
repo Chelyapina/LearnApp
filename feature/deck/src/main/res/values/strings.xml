@@ -13,5 +13,6 @@
     <string name="empty_deck_text">Тренировка окончена!</string>
     <string name="deck_label_learn">Учим</string>
     <string name="deck_label_repeat">Повторяем</string>
-    <string name="load_word">Загрузка слов...</string>
+    <string name="load_word">Загрузка слов…</string>
+    <string name="load_exit">Выход…</string>
 </resources>

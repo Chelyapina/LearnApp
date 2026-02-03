@@ -1,6 +1,31 @@
 <resources>
-    // AppBar
+    <!-- AppBar -->
     <string name="description_icon_back">Назад</string>
     <string name="description_icon_menu">Меню</string>
     <string name="default_initial">\?</string>
+
+    <!-- Network Error -->
+    <string name="network_error_title">Нет подключения</string>
+    <string name="network_error_message">Проверьте интернет</string>
+    <string name="network_error_button">Повторить</string>
+
+    <!-- Server Error -->
+    <string name="server_error_title">Ошибка сервера</string>
+    <string name="server_error_message_template">Код: %d</string>
+    <string name="server_error_button">OK</string>
+
+    <!-- Timeout Error -->
+    <string name="timeout_error_title">Таймаут</string>
+    <string name="timeout_error_message">Сервер не отвечает</string>
+    <string name="timeout_error_button">Повторить</string>
+
+    <!-- Unauthorized Error -->
+    <string name="unauthorized_error_title">Доступ запрещен</string>
+    <string name="unauthorized_error_message">Требуется авторизация</string>
+    <string name="unauthorized_error_button">OK</string>
+
+    <!-- Generic Error -->
+    <string name="generic_error_title">Ошибка</string>
+    <string name="generic_error_message">Что-то пошло не так</string>
+    <string name="generic_error_button">OK</string>
 </resources>

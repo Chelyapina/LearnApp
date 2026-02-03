@@ -6,41 +6,45 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.authorization.R
-import com.example.authorization.presentation.state.AuthScreenState
+import com.example.authorization.presentation.state.AuthEvent
+import com.example.authorization.presentation.state.AuthScreen
+import com.example.authorization.presentation.state.AuthUiState
 import com.example.designsystem.theme.customOnBackgroundColor
 
 @Composable
 fun AuthorizationContent(
-    state : AuthScreenState,
-    onLoginSubmit : (email : String) -> Unit,
-    onPasswordSubmit : (email : String, password : String) -> Unit,
-    modifier : Modifier = Modifier
+    modifier : Modifier = Modifier,
+    uiState : AuthUiState,
+    onEvent : (AuthEvent) -> Unit,
+    onTogglePasswordVisibility : () -> Unit = {},
 ) {
     Column(
         modifier = modifier
@@ -50,16 +54,16 @@ fun AuthorizationContent(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = when (state) {
-                is AuthScreenState.Login -> stringResource(R.string.login_title)
-                is AuthScreenState.Password -> stringResource(R.string.password_title)
+            text = when (uiState.screen) {
+                is AuthScreen.Login -> stringResource(R.string.login_title)
+                is AuthScreen.Password -> stringResource(R.string.password_title)
             },
             style = MaterialTheme.typography.displayLarge,
             modifier = Modifier.padding(bottom = 16.dp)
         )
 
-        when (state) {
-            is AuthScreenState.Login -> {
+        when (uiState.screen) {
+            is AuthScreen.Login -> {
                 Text(
                     text = stringResource(R.string.login_subtitle),
                     style = MaterialTheme.typography.titleSmall,
@@ -69,21 +73,29 @@ fun AuthorizationContent(
                 )
             }
 
-            is AuthScreenState.Password -> {}
+            is AuthScreen.Password -> {}
         }
 
-        when (state) {
-            is AuthScreenState.Login -> {
+        when (uiState.screen) {
+            is AuthScreen.Login -> {
                 LoginTextField(
-                    label = stringResource(R.string.login_textfield), onSubmit = onLoginSubmit
+                    email = uiState.email,
+                    emailError = uiState.emailError,
+                    onEmailChanged = { onEvent(AuthEvent.EmailChanged(it)) },
+                    onSubmit = { onEvent(AuthEvent.SubmitLogin) },
+                    label = stringResource(R.string.login_textfield)
                 )
             }
 
-            is AuthScreenState.Password -> {
+            is AuthScreen.Password -> {
                 PasswordTextField(
-                    label = stringResource(R.string.password_textfield),
-                    email = state.email,
-                    onSubmit = onPasswordSubmit
+                    password = uiState.password,
+                    isPasswordVisible = uiState.isPasswordVisible,
+                    passwordError = uiState.passwordError,
+                    onPasswordChanged = { onEvent(AuthEvent.PasswordChanged(it)) },
+                    onSubmit = { onEvent(AuthEvent.SubmitPassword) },
+                    onTogglePasswordVisibility = onTogglePasswordVisibility,
+                    label = stringResource(R.string.password_textfield)
                 )
             }
         }
@@ -92,52 +104,82 @@ fun AuthorizationContent(
 
 @Composable
 private fun LoginTextField(
-    label : String, onSubmit : (email : String) -> Unit, modifier : Modifier = Modifier
+    email : String,
+    emailError : String?,
+    onEmailChanged : (String) -> Unit,
+    onSubmit : () -> Unit,
+    label : String,
+    modifier : Modifier = Modifier
 ) {
-    var email by remember { mutableStateOf("") }
-
     AuthorizationTextField(
         value = email,
-        onValueChange = { email = it },
+        onValueChange = onEmailChanged,
         label = label,
         isPassword = false,
-        onSubmit = { onSubmit(email) },
+        isPasswordVisible = false,
+        onPasswordVisibilityToggle = { },
+        onSubmit = onSubmit,
+        error = emailError,
         modifier = modifier
     )
 }
 
 @Composable
 private fun PasswordTextField(
+    password : String,
+    isPasswordVisible : Boolean,
+    passwordError : String?,
+    onPasswordChanged : (String) -> Unit,
+    onSubmit : () -> Unit,
+    onTogglePasswordVisibility : () -> Unit,
     label : String,
-    email : String,
-    onSubmit : (email : String, password : String) -> Unit,
     modifier : Modifier = Modifier
 ) {
-    var password by remember { mutableStateOf("") }
-
     AuthorizationTextField(
         value = password,
-        onValueChange = { password = it },
+        onValueChange = onPasswordChanged,
         label = label,
         isPassword = true,
-        onSubmit = { onSubmit(email, password) },
+        isPasswordVisible = isPasswordVisible,
+        onPasswordVisibilityToggle = onTogglePasswordVisibility,
+        onSubmit = onSubmit,
+        error = passwordError,
         modifier = modifier
     )
 }
 
 @Composable
 private fun AuthorizationTextField(
+    modifier : Modifier = Modifier,
     value : String,
     onValueChange : (String) -> Unit,
     label : String,
     isPassword : Boolean,
+    isPasswordVisible : Boolean = false,
+    onPasswordVisibilityToggle : () -> Unit = {},
     onSubmit : () -> Unit,
-    modifier : Modifier = Modifier
+    error : String? = null
 ) {
+    val trailingIcon : (@Composable () -> Unit)? = if (isPassword) {
+        {
+            IconButton(onClick = onPasswordVisibilityToggle) {
+                Icon(
+                    imageVector = if (isPasswordVisible) {
+                        Icons.Filled.Visibility
+                    } else {
+                        Icons.Filled.VisibilityOff
+                    },
+                    contentDescription = if (isPasswordVisible) stringResource(R.string.visible_password)
+                    else stringResource(R.string.no_visible_password)
+                )
+            }
+        }
+    } else {
+        null
+    }
+
     Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(80.dp),
+        modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Row(
@@ -146,22 +188,40 @@ private fun AuthorizationTextField(
             OutlinedTextField(
                 value = value,
                 onValueChange = onValueChange,
-                label = { Text(label) },
+                label = { Text(text = label) },
                 shape = RoundedCornerShape(6.dp),
-                visualTransformation = if (isPassword) PasswordVisualTransformation() else VisualTransformation.None,
+                visualTransformation = if (isPassword && !isPasswordVisible) {
+                    PasswordVisualTransformation()
+                } else {
+                    VisualTransformation.None
+                },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = if (isPassword) KeyboardType.Password else KeyboardType.Text,
+                    imeAction = ImeAction.Done
+                ),
                 keyboardActions = KeyboardActions(
-                    onDone = { onSubmit() })
+                    onDone = { onSubmit() }),
+                trailingIcon = trailingIcon,
+                singleLine = true,
+                isError = error != null,
             )
         }
 
         Spacer(modifier = Modifier.width(16.dp))
 
         Row(
-            modifier = Modifier.padding(top = 8.dp),
+            modifier = Modifier.padding(top = 6.dp),
         ) {
             FilledIconButton(
                 onClick = onSubmit,
+                enabled = value.isNotBlank(),
                 shape = RoundedCornerShape(12.dp),
+                colors = IconButtonDefaults.filledIconButtonColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    disabledContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.38f),
+                    contentColor = MaterialTheme.colorScheme.onPrimary,
+                    disabledContentColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.38f)
+                ),
                 modifier = Modifier.size(56.dp)
             ) {
                 Icon(
@@ -171,5 +231,16 @@ private fun AuthorizationTextField(
                 )
             }
         }
+    }
+
+    if (error != null) {
+        Text(
+            modifier = Modifier
+                .padding(start = 12.dp, top = 4.dp)
+                .fillMaxWidth(),
+            text = error,
+            color = MaterialTheme.colorScheme.error,
+            style = MaterialTheme.typography.bodySmall
+        )
     }
 }

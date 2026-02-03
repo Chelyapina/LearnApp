@@ -3,6 +3,7 @@ package com.example.learnapp.di
 import com.example.authorization.di.PublicAuthModule
 import com.example.learnapp.MainActivity
 import com.example.deck.di.PublicDeckModule
+import com.example.network.di.NetworkModule
 import com.example.security.di.SecurityModule
 import com.example.storage.di.StorageModule
 import dagger.Component
@@ -13,6 +14,7 @@ import javax.inject.Singleton
     modules = [
         SecurityModule::class,
         StorageModule::class,
+        NetworkModule::class,
         AppModule::class,
         PublicDeckModule::class,
         PublicAuthModule::class,

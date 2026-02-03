@@ -4,4 +4,8 @@ package com.example.authorization.domain.entity
 value class Token(private val token : String) {
     fun getValue() : String = token
     override fun toString() : String = "TokenEntity(***)"
+
+    companion object {
+        val EMPTY = Token("")
+    }
 }
