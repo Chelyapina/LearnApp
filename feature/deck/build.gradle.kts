@@ -35,6 +35,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:models"))
     implementation(project(":core:storage"))
     implementation(project(":core:network"))
     implementation(project(":core:security"))

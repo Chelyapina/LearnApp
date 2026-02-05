@@ -12,6 +12,7 @@ import com.example.authorization.presentation.validation.AuthValidation
 import com.example.designsystem.components.alert.model.AlertData
 import com.example.designsystem.state.LoadError
 import com.example.designsystem.state.LoadingState
+import com.example.models.AuthStateManager
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -23,7 +24,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class AuthViewModel @Inject constructor(
-    private val scenarioLoginUseCase : ScenarioLoginUseCase
+    private val scenarioLoginUseCase : ScenarioLoginUseCase,
+    private val authStateManager : AuthStateManager
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(AuthUiState(isLoading = LoadingState.Idle))
@@ -119,10 +121,14 @@ class AuthViewModel @Inject constructor(
                             _uiState.update { state ->
                                 state.copy(isLoading = LoadingState.Success)
                             }
+                            viewModelScope.launch {
+                                authStateManager.notifyAuthChanged(true)
+                            }
                             _navigationEvent.emit(AuthNavigationEvent.NavigateToMain)
                         }
 
                         is ScenarioLoginUseCase.Result.Error -> {
+                            authStateManager.notifyAuthChanged(false)
                             handleLoginError(result.error)
                         }
                     }

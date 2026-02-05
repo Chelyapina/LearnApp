@@ -20,6 +20,8 @@ import com.example.deck.presentation.state.DeckUiState
 import com.example.designsystem.components.alert.model.AlertData
 import com.example.designsystem.state.LoadError
 import com.example.designsystem.state.LoadingState
+import com.example.models.AuthState
+import com.example.models.AuthStateManager
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -40,7 +42,8 @@ class DeckViewModel @Inject constructor(
     private val getCompletedDeckUseCase : GetCompletedDeckUseCase,
     private val clearCompletedDeckUseCase : ClearCompletedDeckUseCase,
     private val logOutUseCase : LogOutUseCase,
-    private val getCurrentUserUseCase : GetCurrentUserUseCase
+    private val getCurrentUserUseCase : GetCurrentUserUseCase,
+    private val authStateManager : AuthStateManager
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(DeckUiState(isLoading = LoadingState.Idle))
@@ -51,6 +54,25 @@ class DeckViewModel @Inject constructor(
 
     init {
         handleEvent(DeckEvent.LoadDecks)
+
+        viewModelScope.launch {
+            authStateManager.shouldRefresh.collect {
+                handleEvent(DeckEvent.LoadDecks)
+            }
+        }
+
+        viewModelScope.launch {
+            authStateManager.authState.collect { state ->
+                when (state) {
+                    is AuthState.Authenticated -> {
+                        loadDecks()
+                    }
+
+                    else -> {
+                    }
+                }
+            }
+        }
     }
 
     fun handleEvent(event : DeckEvent) {

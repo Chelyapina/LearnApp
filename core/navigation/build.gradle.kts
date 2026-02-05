@@ -36,6 +36,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:models"))
     implementation(project(":feature:splash"))
     implementation(project(":feature:deck"))
     implementation(project(":feature:authorization"))

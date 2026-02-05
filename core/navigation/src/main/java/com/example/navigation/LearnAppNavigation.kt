@@ -1,7 +1,7 @@
 package com.example.navigation
 
+import android.annotation.SuppressLint
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -15,8 +15,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.authorization.presentation.navigation.AuthorizationDestination
 import com.example.deck.presentation.navigation.DeckDestination
+import com.example.deck.presentation.state.DeckNavigationEvent
+import com.example.deck.presentation.viewmodel.DeckViewModel
+import com.example.deck.profile.ProfileScreen
+import com.example.models.AuthState
 import com.example.splash.presentation.SplashViewModel
 
+@SuppressLint("RestrictedApi")
 @Composable
 fun LearnAppNavigation(
     viewModelFactory : ViewModelProvider.Factory, onExitApp : () -> Unit
@@ -27,23 +32,45 @@ fun LearnAppNavigation(
         factory = viewModelFactory, key = "splash"
     )
 
+    val deckViewModel: DeckViewModel = viewModel(
+        factory = viewModelFactory, key = "deck"
+    )
+
     val authState by splashViewModel.authState.collectAsStateWithLifecycle()
 
     LaunchedEffect(authState) {
         when (authState) {
-            is SplashViewModel.AuthState.Authenticated -> {
+            is AuthState.Authenticated -> {
                 navController.navigate("main") {
                     popUpTo("splash") { inclusive = true }
                 }
             }
 
-            is SplashViewModel.AuthState.Loading -> {
+            is AuthState.Loading -> {
                 // Перехода нет тк загрузка осуществляется на SplashScreen
             }
 
-            is SplashViewModel.AuthState.Error, is SplashViewModel.AuthState.Unauthenticated -> {
+            is AuthState.Error, is AuthState.Unauthenticated -> {
                 navController.navigate("auth") {
                     popUpTo("splash") { inclusive = true }
+                }
+            }
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        deckViewModel.navigationEvent.collect { event ->
+            when (event) {
+                is DeckNavigationEvent.NavigateToAuth -> {
+                    navController.navigate("auth") {
+                        popUpTo(0) { inclusive = true }
+                    }
+                }
+                is DeckNavigationEvent.NavigateToProfile -> {
+                    navController.navigate("profile")
+                }
+                is DeckNavigationEvent.NavigateBack -> {
+                    navController.popBackStack()
                 }
             }
         }
@@ -58,7 +85,7 @@ fun LearnAppNavigation(
         }
 
         when (currentDestination) {
-            "auth" -> {
+            "auth", "main" -> {
                 if (hasPreviousScreen) {
                     navController.popBackStack()
                 } else {
@@ -66,10 +93,8 @@ fun LearnAppNavigation(
                 }
             }
 
-            "main" -> {
-                navController.navigate("auth") {
-                    popUpTo("main") { inclusive = true }
-                }
+            "profile" -> {
+                navController.popBackStack()
             }
 
             else -> {
@@ -86,7 +111,6 @@ fun LearnAppNavigation(
         navController = navController, startDestination = "splash"
     ) {
         composable("splash") {
-            Box(Modifier.fillMaxSize())
         }
 
         composable("auth") { backStackEntry ->
@@ -105,7 +129,16 @@ fun LearnAppNavigation(
             )
 
             DeckDestination(
-                viewModelFactory = viewModelFactory, navigation = deckNavigation
+                viewModel = deckViewModel,
+                navigation = deckNavigation
+            )
+        }
+
+        composable("profile") {
+            ProfileScreen(
+                viewModel = deckViewModel,
+                onBackClick = { navController.popBackStack() },
+                modifier = Modifier.fillMaxSize()
             )
         }
     }
