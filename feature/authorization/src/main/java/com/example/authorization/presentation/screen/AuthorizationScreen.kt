@@ -88,7 +88,7 @@ fun AuthorizationScreenContent(
             CommonAppBar(
                 state = when (uiState.screen) {
                     is AuthScreen.Login -> AppBarState.Empty
-                    is AuthScreen.Password -> AppBarState.Back
+                    is AuthScreen.Password -> AppBarState.Back()
                 }, onBackClick = { viewModel.handleEvent(AuthEvent.BackPressed) }
             )
         }, modifier = modifier.systemBarsPadding()
