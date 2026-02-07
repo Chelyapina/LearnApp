@@ -23,6 +23,7 @@ fun DeckDestination(
             when (event) {
                 is DeckNavigationEvent.NavigateToAuth -> navigation.navigateToAuth()
                 is DeckNavigationEvent.NavigateBack -> navigation.exitApp()
+                is DeckNavigationEvent.NavigateToProfile -> navigation.navigateToProfile()
             }
         }
     }

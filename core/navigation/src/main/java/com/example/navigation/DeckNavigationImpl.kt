@@ -13,6 +13,10 @@ class DeckNavigationImpl(
         }
     }
 
+    override fun navigateToProfile() {
+        navController.navigate("profile")
+    }
+
     override fun exitApp() {
         onExitApp()
     }

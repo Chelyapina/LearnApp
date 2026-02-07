@@ -79,7 +79,9 @@ fun DeckScreenContent(
                 state = AppBarState.TwoActions(
                     firstName = userName,
                     onMenuClick = {},
-                    onAvatarClick = {},
+                    onAvatarClick = {
+                        viewModel.handleEvent(DeckEvent.NavigateToProfile)
+                    },
                 )
             )
         },

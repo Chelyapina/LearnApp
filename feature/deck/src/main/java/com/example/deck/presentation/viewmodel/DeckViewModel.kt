@@ -2,11 +2,11 @@ package com.example.deck.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.deck.domain.usecase.local.GetCurrentUserUseCase
-import com.example.deck.domain.usecase.local.LogOutUseCase
 import com.example.deck.domain.usecase.local.AddCompletedWordUseCase
 import com.example.deck.domain.usecase.local.ClearCompletedDeckUseCase
 import com.example.deck.domain.usecase.local.GetCompletedDeckUseCase
+import com.example.deck.domain.usecase.local.GetCurrentUserUseCase
+import com.example.deck.domain.usecase.local.LogOutUseCase
 import com.example.deck.domain.usecase.local.ShouldSendCompletedDeckUseCase
 import com.example.deck.domain.usecase.remote.GetLearnDeckUseCase
 import com.example.deck.domain.usecase.remote.GetRepeatDeckUseCase
@@ -77,12 +77,13 @@ class DeckViewModel @Inject constructor(
 
     fun handleEvent(event : DeckEvent) {
         when (event) {
-            DeckEvent.LoadDecks -> loadDecks()
+            is DeckEvent.LoadDecks -> loadDecks()
             is DeckEvent.SwitchDeck -> switchDeck(event.deckType)
             is DeckEvent.MarkWord -> markWord(event.wordId, event.isKnown)
             is DeckEvent.ResetDeck -> resetDeck(event.deckType)
-            DeckEvent.Logout -> logout()
-            DeckEvent.AlertHandled -> handleAlertDismissed()
+            is DeckEvent.Logout -> logout()
+            is DeckEvent.NavigateToProfile -> navigateToProfile()
+            is DeckEvent.AlertHandled -> handleAlertDismissed()
         }
     }
 
@@ -252,6 +253,12 @@ class DeckViewModel @Inject constructor(
                     )
                 }
             }
+        }
+    }
+
+    private fun navigateToProfile() {
+        viewModelScope.launch {
+            _navigationEvent.emit(DeckNavigationEvent.NavigateToProfile)
         }
     }
 

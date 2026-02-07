@@ -35,10 +35,12 @@ sealed class DeckEvent {
     data class MarkWord(val wordId: Int, val isKnown: Boolean) : DeckEvent()
     data class ResetDeck(val deckType : DeckType) : DeckEvent()
     data object Logout : DeckEvent()
+    data object NavigateToProfile : DeckEvent()
     data object AlertHandled : DeckEvent()
 }
 
 sealed interface DeckNavigationEvent {
     data object NavigateToAuth : DeckNavigationEvent
     data object NavigateBack : DeckNavigationEvent
+    data object NavigateToProfile : DeckNavigationEvent
 }
