@@ -18,5 +18,8 @@ data class WordCardDto(
     val translation: String,
 
     @SerialName("studyLvl")
-    val repetitionsCount: Int = 0
+    val repetitionsCount: Int = 0,
+
+    @SerialName("example")
+    val example: String? = null,
 )
