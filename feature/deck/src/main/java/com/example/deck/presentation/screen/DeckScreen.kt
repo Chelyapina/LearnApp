@@ -104,7 +104,6 @@ fun DeckScreenContent(
                         state = screen,
                         viewModel = viewModel,
                         onCardClick = {},
-                        onLogoutClick = { viewModel.handleEvent(DeckEvent.Logout) },
                         modifier = Modifier.fillMaxWidth()
                     )
                 }
