@@ -79,26 +79,28 @@ fun LearnAppNavigation(
     BackHandler(enabled = true) {
         val currentDestination = navController.currentDestination?.route
         val backStack = navController.currentBackStack.value
-
-        val hasPreviousScreen = backStack.any {
-            it.destination.route != currentDestination
-        }
+        val canGoBack = backStack.size > 1
 
         when (currentDestination) {
-            "auth", "main" -> {
-                if (hasPreviousScreen) {
+            "profile" -> {
+                navController.popBackStack()
+            }
+
+            "main" -> {
+                val isProfileInBackStack = backStack.any { it.destination.route == "profile" }
+                if (isProfileInBackStack) {
                     navController.popBackStack()
                 } else {
                     onExitApp()
                 }
             }
 
-            "profile" -> {
-                navController.popBackStack()
+            "splash" -> {
+                onExitApp()
             }
 
             else -> {
-                if (hasPreviousScreen) {
+                if (canGoBack) {
                     navController.popBackStack()
                 } else {
                     onExitApp()
@@ -114,6 +116,17 @@ fun LearnAppNavigation(
         }
 
         composable("auth") { backStackEntry ->
+            BackHandler(enabled = true) {
+                val backStack = navController.currentBackStack.value
+                val canGoBack = backStack.size > 1
+
+                if (canGoBack) {
+                    navController.popBackStack()
+                } else {
+                    onExitApp()
+                }
+            }
+
             val authNavigation = AuthNavigationImpl(
                 navController = navController, onExitApp = onExitApp
             )

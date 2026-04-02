@@ -1,6 +1,5 @@
 package com.example.deck.presentation.screen
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -30,9 +29,6 @@ fun DeckScreen(
     viewModel: DeckViewModel,
     uiState: DeckUiState
 ) {
-    BackHandler(enabled = true) {
-        viewModel.handleEvent(DeckEvent.Logout)
-    }
 
     DeckScreenContent(
         viewModel = viewModel,
