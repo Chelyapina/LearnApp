@@ -34,8 +34,3 @@ sealed class AuthEvent {
 
     object AlertHandled : AuthEvent()
 }
-
-sealed interface AuthNavigationEvent {
-    data object NavigateToMain : AuthNavigationEvent
-    data object ExitApp : AuthNavigationEvent
-}

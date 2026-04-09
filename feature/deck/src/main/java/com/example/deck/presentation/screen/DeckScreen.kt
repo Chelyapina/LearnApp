@@ -12,8 +12,10 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.deck.R
 import com.example.deck.presentation.state.DeckEvent
 import com.example.deck.presentation.state.DeckScreen
@@ -27,8 +29,9 @@ import com.example.designsystem.state.LoadingState
 @Composable
 fun DeckScreen(
     viewModel: DeckViewModel,
-    uiState: DeckUiState
+    modifier: Modifier = Modifier
 ) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     DeckScreenContent(
         viewModel = viewModel,

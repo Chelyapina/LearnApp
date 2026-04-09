@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.authorization.domain.entity.Auth
 import com.example.authorization.domain.usecase.ScenarioLoginUseCase
 import com.example.authorization.presentation.state.AuthEvent
-import com.example.authorization.presentation.state.AuthNavigationEvent
 import com.example.authorization.presentation.state.AuthScreen
 import com.example.authorization.presentation.state.AuthUiState
 import com.example.authorization.presentation.validation.AuthValidation
@@ -13,11 +12,8 @@ import com.example.designsystem.components.alert.model.AlertData
 import com.example.designsystem.state.LoadError
 import com.example.designsystem.state.LoadingState
 import com.example.models.AuthStateManager
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -30,9 +26,6 @@ class AuthViewModel @Inject constructor(
 
     private val _uiState = MutableStateFlow(AuthUiState(isLoading = LoadingState.Idle))
     val uiState : StateFlow<AuthUiState> = _uiState.asStateFlow()
-
-    private val _navigationEvent = MutableSharedFlow<AuthNavigationEvent>()
-    val navigationEvent : SharedFlow<AuthNavigationEvent> = _navigationEvent.asSharedFlow()
 
     fun handleEvent(event : AuthEvent) {
         when (event) {
@@ -121,10 +114,7 @@ class AuthViewModel @Inject constructor(
                             _uiState.update { state ->
                                 state.copy(isLoading = LoadingState.Success)
                             }
-                            viewModelScope.launch {
-                                authStateManager.notifyAuthChanged(true)
-                            }
-                            _navigationEvent.emit(AuthNavigationEvent.NavigateToMain)
+                            authStateManager.notifyAuthChanged(true)
                         }
 
                         is ScenarioLoginUseCase.Result.Error -> {
@@ -186,9 +176,7 @@ class AuthViewModel @Inject constructor(
             }
 
             is AuthScreen.Login -> {
-                viewModelScope.launch {
-                    _navigationEvent.emit(AuthNavigationEvent.ExitApp)
-                }
+
             }
         }
     }

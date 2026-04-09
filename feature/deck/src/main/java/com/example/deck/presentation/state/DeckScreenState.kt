@@ -41,6 +41,5 @@ sealed class DeckEvent {
 
 sealed interface DeckNavigationEvent {
     data object NavigateToAuth : DeckNavigationEvent
-    data object NavigateBack : DeckNavigationEvent
     data object NavigateToProfile : DeckNavigationEvent
 }

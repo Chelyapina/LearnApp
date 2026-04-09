@@ -14,7 +14,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.authorization.presentation.navigation.AuthorizationDestination
-import com.example.deck.presentation.navigation.DeckDestination
+import com.example.deck.presentation.screen.DeckScreen
 import com.example.deck.presentation.state.DeckNavigationEvent
 import com.example.deck.presentation.viewmodel.DeckViewModel
 import com.example.deck.profile.ProfileScreen
@@ -69,9 +69,6 @@ fun LearnAppNavigation(
                 is DeckNavigationEvent.NavigateToProfile -> {
                     navController.navigate("profile")
                 }
-                is DeckNavigationEvent.NavigateBack -> {
-                    navController.popBackStack()
-                }
             }
         }
     }
@@ -87,15 +84,14 @@ fun LearnAppNavigation(
             }
 
             "main" -> {
-                val isProfileInBackStack = backStack.any { it.destination.route == "profile" }
-                if (isProfileInBackStack) {
+                if (canGoBack) {
                     navController.popBackStack()
                 } else {
                     onExitApp()
                 }
             }
 
-            "splash" -> {
+            "auth", "splash" -> {
                 onExitApp()
             }
 
@@ -116,34 +112,15 @@ fun LearnAppNavigation(
         }
 
         composable("auth") { backStackEntry ->
-            BackHandler(enabled = true) {
-                val backStack = navController.currentBackStack.value
-                val canGoBack = backStack.size > 1
-
-                if (canGoBack) {
-                    navController.popBackStack()
-                } else {
-                    onExitApp()
-                }
-            }
-
-            val authNavigation = AuthNavigationImpl(
-                navController = navController, onExitApp = onExitApp
-            )
-
             AuthorizationDestination(
-                viewModelFactory = viewModelFactory, navigation = authNavigation
+                viewModelFactory = viewModelFactory
             )
         }
 
         composable("main") { backStackEntry ->
-            val deckNavigation = DeckNavigationImpl(
-                navController = navController, onExitApp = onExitApp
-            )
-
-            DeckDestination(
+            DeckScreen(
                 viewModel = deckViewModel,
-                navigation = deckNavigation
+                modifier = Modifier.fillMaxSize()
             )
         }
 
