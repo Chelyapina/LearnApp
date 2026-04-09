@@ -36,11 +36,13 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:models"))
-    implementation(project(":feature:splash"))
-    implementation(project(":feature:deck"))
     implementation(project(":feature:authorization"))
+    implementation(project(":feature:deck"))
+    implementation(project(":feature:settings"))
+    implementation(project(":feature:splash"))
+
     implementation(project(":core:security"))
+    implementation(project(":core:models"))
 
     implementation(platform(libs.androidx.compose.bom))
     implementation (libs.androidx.compose.runtime)

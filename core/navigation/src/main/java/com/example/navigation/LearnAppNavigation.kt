@@ -20,6 +20,7 @@ import com.example.deck.presentation.state.DeckNavigationEvent
 import com.example.deck.presentation.viewmodel.DeckViewModel
 import com.example.deck.profile.ProfileScreen
 import com.example.models.AuthState
+import com.example.settings.presentation.navigation.SettingsDestination
 import com.example.splash.presentation.SplashViewModel
 
 @SuppressLint("RestrictedApi")
@@ -129,8 +130,16 @@ fun LearnAppNavigation(
             ProfileScreen(
                 viewModel = deckViewModel,
                 onBackClick = { navController.popBackStack() },
+                onSettingsClick = {
+                    navController.navigate("settings")
+                },
                 modifier = Modifier.fillMaxSize()
             )
+        }
+
+        composable("settings") {
+            SettingsDestination(
+                viewModelFactory = viewModelFactory, onBackClick = { navController.popBackStack() })
         }
     }
 }

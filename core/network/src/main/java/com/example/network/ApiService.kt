@@ -2,6 +2,8 @@ package com.example.network
 
 import com.example.network.modelDto.AuthResponseDto
 import com.example.network.modelDto.LoginRequestDto
+import com.example.network.modelDto.SettingsResponseDto
+import com.example.network.modelDto.UpdateSettingsRequestDto
 import com.example.network.modelDto.WordCardDto
 import com.example.network.modelDto.WordCompletedDto
 import com.example.network.utils.NetworkConstants
@@ -30,4 +32,14 @@ interface ApiService {
     suspend fun saveCompletedDeck(
         @Header("Authorization") token: String, @Body completedDeck : List<WordCompletedDto>
     ): Response<Unit>
+
+    @GET(NetworkConstants.SETTINGS)
+    suspend fun getSettings(
+        @Header("Authorization") token : String
+    ) : Response<SettingsResponseDto>
+
+    @PATCH(NetworkConstants.SETTINGS)
+    suspend fun updateSettings(
+        @Header("Authorization") token : String, @Body request : UpdateSettingsRequestDto
+    ) : Response<Unit>
 }

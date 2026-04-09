@@ -9,4 +9,5 @@ object NetworkConstants {
     const val NEW_WORDS = "learning/words/new"
     const val REPEAT_WORDS = "learning/words/repeat"
     const val COMPLETED_WORDS = "learning/progress"
+    const val SETTINGS = "/users/settings"
 }

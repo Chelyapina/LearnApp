@@ -46,6 +46,7 @@ dependencies {
     implementation(project(":feature:splash"))
     implementation(project(":feature:deck"))
     implementation(project(":feature:authorization"))
+    implementation(project(":feature:settings"))
 
     implementation(project(":core:navigation"))
     implementation(project(":core:network"))

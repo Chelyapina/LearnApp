@@ -1,4 +1,4 @@
-package com.example.settings
+package com.example.settings.presentation
 
 sealed interface SettingsUiState {
     data class Success(

@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -38,6 +39,10 @@ android {
 dependencies {
     implementation(project(":shared:designsystem"))
 
+    implementation(project(":core:security"))
+    implementation(project(":core:models"))
+    implementation(project(":core:network"))
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.activity.compose)
@@ -49,6 +54,10 @@ dependencies {
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.compose.material.icons.extended)
     implementation(libs.lifecycle.viewmodel.compose)
+
+    // Serialization
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.retrofit.kotlinx.serialization)
 
     //preview
     implementation(libs.androidx.compose.ui.tooling.preview)

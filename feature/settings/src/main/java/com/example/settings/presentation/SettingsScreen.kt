@@ -1,4 +1,4 @@
-package com.example.settings
+package com.example.settings.presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -44,17 +45,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.designsystem.components.alert.model.AlertData
 import com.example.designsystem.components.appbar.AppBarState
 import com.example.designsystem.components.appbar.CommonAppBar
-import com.example.designsystem.state.AlertConfig
 import com.example.designsystem.state.LoadingState
-import com.example.designsystem.state.getConfirmText
-import com.example.designsystem.state.getMessage
-import com.example.designsystem.state.getTitle
-import com.example.designsystem.theme.LearnAppTheme
+import com.example.settings.R
 
 @Composable
 fun SettingsScreen(
@@ -67,7 +63,8 @@ fun SettingsScreen(
     onConfirmPasswordChange : (String) -> Unit,
     onOldPasswordChange : (String) -> Unit,
     onSaveClick : () -> Unit,
-    onAlertDismissed : () -> Unit
+    onAlertDismissed : () -> Unit,
+    onBackClick : () -> Unit
 ) {
     val currentState = when (uiState) {
         is SettingsUiState.Success -> uiState
@@ -78,14 +75,18 @@ fun SettingsScreen(
     var isConfirmPasswordVisible by remember { mutableStateOf(false) }
     var isOldPasswordVisible by remember { mutableStateOf(false) }
 
+    val isLoading = isLoadingState == LoadingState.Loading
+
     Box(modifier = Modifier.fillMaxSize()) {
         Scaffold(
             topBar = {
                 CommonAppBar(
                     modifier = Modifier.padding(16.dp),
-                    state = AppBarState.Back(title = stringResource(id = R.string.settings_title))
+                    state = AppBarState.Back(title = stringResource(id = R.string.settings_title)),
+                    onBackClick = onBackClick
                 )
-            }) { paddingValues ->
+            }, modifier = Modifier.systemBarsPadding()
+        ) { paddingValues ->
 
             Column(
                 modifier = Modifier
@@ -124,7 +125,8 @@ fun SettingsScreen(
 
                 ConfirmChangesSection(
                     oldPassword = currentState.oldPassword,
-                    isSaveEnabled = currentState.oldPassword.isNotBlank(),
+                    isSaveEnabled = currentState.oldPassword.isNotBlank() && !isLoading,
+                    isLoading = isLoading,
                     onOldPasswordChange = onOldPasswordChange,
                     onSaveClick = onSaveClick,
                     isOldPasswordVisible = isOldPasswordVisible,
@@ -136,37 +138,33 @@ fun SettingsScreen(
             }
         }
 
-        when (isLoadingState) {
-            LoadingState.Loading -> {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.8f)),
-                    contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator()
-                }
+        if (isLoading) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.8f)),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
             }
-
-            else -> {}
         }
     }
 
     alertData?.let { alert ->
-        val errorState = isLoadingState as? LoadingState.Error
-        val alertConfig = errorState?.error?.toAlertConfig() ?: AlertConfig.GenericError
-
         AlertDialog(
             onDismissRequest = onAlertDismissed,
-            title = { Text(text = alertConfig.getTitle()) },
-            text = { Text(text = alertConfig.getMessage()) },
+            title = { Text(text = alert.title) },
+            text = { Text(text = alert.message) },
             confirmButton = {
                 Button(
-                    onClick = alert.onConfirm, colors = ButtonDefaults.buttonColors(
+                    onClick = {
+                        alert.onConfirm()
+                        onAlertDismissed()
+                    }, colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.primary
                     )
                 ) {
-                    Text(text = alertConfig.getConfirmText())
+                    Text(text = alert.confirmText)
                 }
             },
             dismissButton = null,
@@ -343,8 +341,7 @@ private fun PasswordSection(
 
 @Composable
 private fun ConfirmChangesSection(
-    oldPassword : String,
-    isSaveEnabled : Boolean,
+    oldPassword : String, isSaveEnabled : Boolean, isLoading : Boolean,
     onOldPasswordChange : (String) -> Unit,
     onSaveClick : () -> Unit,
     isOldPasswordVisible : Boolean,
@@ -384,7 +381,11 @@ private fun ConfirmChangesSection(
             Button(
                 onClick = onSaveClick, enabled = isSaveEnabled, modifier = Modifier.fillMaxWidth()
             ) {
-                Text(stringResource(R.string.save_button))
+                if (isLoading) {
+                    CircularProgressIndicator(modifier = Modifier.size(24.dp))
+                } else {
+                    Text(stringResource(R.string.save_button))
+                }
             }
         }
     }
@@ -446,41 +447,4 @@ private fun SettingsPasswordField(
                 )
             }
         })
-}
-
-@Composable
-fun SettingsScreenPreview() {
-    var limitNewWords by remember { mutableStateOf(15) }
-    var limitWordsForRepeat by remember { mutableStateOf(20) }
-    var oldPassword by remember { mutableStateOf("") }
-    var newPassword by remember { mutableStateOf("") }
-    var confirmPassword by remember { mutableStateOf("") }
-
-    SettingsScreen(
-        uiState = SettingsUiState.Success(
-            limitNewWords = limitNewWords,
-            limitWordsForRepeat = limitWordsForRepeat,
-            oldPassword = oldPassword,
-            newPassword = newPassword,
-            confirmPassword = confirmPassword
-        ),
-        isLoadingState = LoadingState.Idle,
-        alertData = null,
-        onLimitNewWordsChange = { limitNewWords = it },
-        onLimitWordsForRepeatChange = { limitWordsForRepeat = it },
-        onOldPasswordChange = { oldPassword = it },
-        onNewPasswordChange = { newPassword = it },
-        onConfirmPasswordChange = { confirmPassword = it },
-        onSaveClick = {
-            println("Save: oldPassword=$oldPassword, newWords=$limitNewWords, repeatWords=$limitWordsForRepeat, newPassword=$newPassword")
-        },
-        onAlertDismissed = {})
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewSettings() {
-    LearnAppTheme {
-        SettingsScreenPreview()
-    }
 }
