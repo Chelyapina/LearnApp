@@ -1,7 +1,7 @@
 package com.example.network.utils
 
 object NetworkConstants {
-    const val BASE_URL = "http://217.71.129.139:5166/"
+    const val BASE_URL = "http://217.71.129.139:4186/"
 
     const val TIMEOUT_SECONDS = 30L
 

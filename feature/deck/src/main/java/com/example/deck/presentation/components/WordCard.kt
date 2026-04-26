@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.deck.R
 import com.example.deck.presentation.model.DeckType
@@ -34,7 +35,7 @@ fun WordCard(
     isTranslation : Boolean,
     isActive : Boolean = true,
     isTopCard : Boolean = false,
-    deckType: DeckType,
+    deckType : DeckType,
 ) {
     Card(
         onClick = onCardClick, modifier = modifier, elevation = CardDefaults.cardElevation(
@@ -63,7 +64,7 @@ fun WordCard(
                         DeckType.REPEAT -> stringResource(R.string.deck_label_repeat)
                     },
                     deckType = deckType,
-                    modifier = Modifier.Companion
+                    modifier = Modifier
                         .align(Alignment.TopStart)
                         .padding(8.dp)
                 )
@@ -73,7 +74,9 @@ fun WordCard(
                 TranslateWord(wordTranslate = word.wordTranslate)
             } else {
                 OriginalWord(
-                    wordOriginal = word.originalWord, wordTranscription = word.wordTranscription
+                    wordOriginal = word.originalWord,
+                    wordTranscription = word.wordTranscription,
+                    example = word.example
                 )
             }
         }
@@ -82,9 +85,7 @@ fun WordCard(
 
 @Composable
 private fun DeckLabel(
-    label : String,
-    deckType: DeckType,
-    modifier : Modifier = Modifier
+    label : String, deckType : DeckType, modifier : Modifier = Modifier
 ) {
     val colorScheme = MaterialTheme.colorScheme
     val (backgroundColor, textColor) = when (deckType) {
@@ -118,7 +119,7 @@ private fun TranslateWord(wordTranslate : String) {
 
 @Composable
 private fun OriginalWord(
-    wordOriginal : String, wordTranscription : String
+    wordOriginal : String, wordTranscription : String, example: String
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center
@@ -134,5 +135,16 @@ private fun OriginalWord(
             style = MaterialTheme.typography.displayMedium,
             color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f)
         )
+        Spacer(modifier = Modifier.padding(8.dp))
+        if (example != "") {
+            Text(
+                text = example,
+                style = MaterialTheme.typography.titleSmall,
+                textAlign = TextAlign.Center,
+                maxLines = 3,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.padding(horizontal = 8.dp)
+            )
+        }
     }
 }

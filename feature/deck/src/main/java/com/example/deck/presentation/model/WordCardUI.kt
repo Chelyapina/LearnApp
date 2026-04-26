@@ -5,4 +5,5 @@ data class WordCardUI(
     val originalWord: String,
     val wordTranslate: String,
     val wordTranscription: String,
+    val example: String
 )

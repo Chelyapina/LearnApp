@@ -12,6 +12,7 @@ import com.example.deck.domain.usecase.remote.GetLearnDeckUseCase
 import com.example.deck.domain.usecase.remote.GetRepeatDeckUseCase
 import com.example.deck.domain.usecase.remote.SetCompletedDeckUseCase
 import com.example.deck.presentation.viewmodel.DeckViewModel
+import com.example.models.AuthStateManager
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -25,7 +26,8 @@ class DeckViewModelFactory @Inject constructor(
     private val getCompletedDeckUseCase : GetCompletedDeckUseCase,
     private val clearCompletedDeckUseCase : ClearCompletedDeckUseCase,
     private val logOutUseCase : LogOutUseCase,
-    private val getCurrentUserUseCase : GetCurrentUserUseCase
+    private val getCurrentUserUseCase : GetCurrentUserUseCase,
+    private val authStateManager : AuthStateManager
 ) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass : Class<T>) : T {
@@ -39,8 +41,8 @@ class DeckViewModelFactory @Inject constructor(
                 getCompletedDeckUseCase = getCompletedDeckUseCase,
                 clearCompletedDeckUseCase = clearCompletedDeckUseCase,
                 logOutUseCase = logOutUseCase,
-                getCurrentUserUseCase = getCurrentUserUseCase
-
+                getCurrentUserUseCase = getCurrentUserUseCase,
+                authStateManager = authStateManager
             ) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")

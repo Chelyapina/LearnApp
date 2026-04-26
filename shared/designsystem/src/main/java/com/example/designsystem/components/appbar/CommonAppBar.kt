@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
@@ -27,6 +28,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.designsystem.R
+import com.example.designsystem.theme.Typography
 import com.example.designsystem.theme.customOnBackgroundColor
 
 @Composable
@@ -52,6 +54,10 @@ fun CommonAppBar(
                     contentDescription = stringResource(R.string.description_icon_back),
                     onClick = onBackClick,
                     tint = contentColor
+                )
+                Text(state.title, style = Typography.titleSmall)
+                Spacer(
+                    Modifier.size(48.dp)
                 )
             }
 

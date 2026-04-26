@@ -12,10 +12,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.learnapp.R
 import com.example.designsystem.components.appbar.AppBarState
 import com.example.designsystem.components.appbar.CommonAppBar
 import com.example.designsystem.theme.LearnAppTheme
+import com.example.learnapp.R
 
 @Composable
 private fun PreviewDivider() {
@@ -33,7 +33,7 @@ fun CommonAppBarPreview_AllStatesLight() {
     LearnAppTheme {
         Column {
             // Back State
-            CommonAppBar(state = AppBarState.Back)
+            CommonAppBar(state = AppBarState.Back())
             PreviewDivider()
 
             // Two Actions State
@@ -52,7 +52,7 @@ fun CommonAppBarPreview_AllStatesDark() {
     LearnAppTheme {
         Column {
             // Back State
-            CommonAppBar(state = AppBarState.Back)
+            CommonAppBar(state = AppBarState.Back())
             PreviewDivider()
 
             // Two Actions State

@@ -1,7 +1,7 @@
 package com.example.navigation
 
+import android.annotation.SuppressLint
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -14,9 +14,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.authorization.presentation.navigation.AuthorizationDestination
-import com.example.deck.presentation.navigation.DeckDestination
+import com.example.deck.presentation.screen.DeckScreen
+import com.example.deck.presentation.state.DeckNavigationEvent
+import com.example.deck.presentation.viewmodel.DeckViewModel
+import com.example.deck.profile.ProfileScreen
+import com.example.models.AuthState
 import com.example.splash.presentation.SplashViewModel
 
+@SuppressLint("RestrictedApi")
 @Composable
 fun LearnAppNavigation(
     viewModelFactory : ViewModelProvider.Factory, onExitApp : () -> Unit
@@ -27,23 +32,42 @@ fun LearnAppNavigation(
         factory = viewModelFactory, key = "splash"
     )
 
+    val deckViewModel: DeckViewModel = viewModel(
+        factory = viewModelFactory, key = "deck"
+    )
+
     val authState by splashViewModel.authState.collectAsStateWithLifecycle()
 
     LaunchedEffect(authState) {
         when (authState) {
-            is SplashViewModel.AuthState.Authenticated -> {
+            is AuthState.Authenticated -> {
                 navController.navigate("main") {
                     popUpTo("splash") { inclusive = true }
                 }
             }
 
-            is SplashViewModel.AuthState.Loading -> {
+            is AuthState.Loading -> {
                 // Перехода нет тк загрузка осуществляется на SplashScreen
             }
 
-            is SplashViewModel.AuthState.Error, is SplashViewModel.AuthState.Unauthenticated -> {
+            is AuthState.Error, is AuthState.Unauthenticated -> {
                 navController.navigate("auth") {
                     popUpTo("splash") { inclusive = true }
+                }
+            }
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        deckViewModel.navigationEvent.collect { event ->
+            when (event) {
+                is DeckNavigationEvent.NavigateToAuth -> {
+                    navController.navigate("auth") {
+                        popUpTo(0) { inclusive = true }
+                    }
+                }
+                is DeckNavigationEvent.NavigateToProfile -> {
+                    navController.navigate("profile")
                 }
             }
         }
@@ -52,28 +76,27 @@ fun LearnAppNavigation(
     BackHandler(enabled = true) {
         val currentDestination = navController.currentDestination?.route
         val backStack = navController.currentBackStack.value
-
-        val hasPreviousScreen = backStack.any {
-            it.destination.route != currentDestination
-        }
+        val canGoBack = backStack.size > 1
 
         when (currentDestination) {
-            "auth" -> {
-                if (hasPreviousScreen) {
+            "profile" -> {
+                navController.popBackStack()
+            }
+
+            "main" -> {
+                if (canGoBack) {
                     navController.popBackStack()
                 } else {
                     onExitApp()
                 }
             }
 
-            "main" -> {
-                navController.navigate("auth") {
-                    popUpTo("main") { inclusive = true }
-                }
+            "auth", "splash" -> {
+                onExitApp()
             }
 
             else -> {
-                if (hasPreviousScreen) {
+                if (canGoBack) {
                     navController.popBackStack()
                 } else {
                     onExitApp()
@@ -86,26 +109,26 @@ fun LearnAppNavigation(
         navController = navController, startDestination = "splash"
     ) {
         composable("splash") {
-            Box(Modifier.fillMaxSize())
         }
 
         composable("auth") { backStackEntry ->
-            val authNavigation = AuthNavigationImpl(
-                navController = navController, onExitApp = onExitApp
-            )
-
             AuthorizationDestination(
-                viewModelFactory = viewModelFactory, navigation = authNavigation
+                viewModelFactory = viewModelFactory
             )
         }
 
         composable("main") { backStackEntry ->
-            val deckNavigation = DeckNavigationImpl(
-                navController = navController, onExitApp = onExitApp
+            DeckScreen(
+                viewModel = deckViewModel,
+                modifier = Modifier.fillMaxSize()
             )
+        }
 
-            DeckDestination(
-                viewModelFactory = viewModelFactory, navigation = deckNavigation
+        composable("profile") {
+            ProfileScreen(
+                viewModel = deckViewModel,
+                onBackClick = { navController.popBackStack() },
+                modifier = Modifier.fillMaxSize()
             )
         }
     }

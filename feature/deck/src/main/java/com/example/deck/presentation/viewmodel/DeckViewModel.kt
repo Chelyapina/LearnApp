@@ -2,11 +2,11 @@ package com.example.deck.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.deck.domain.usecase.local.GetCurrentUserUseCase
-import com.example.deck.domain.usecase.local.LogOutUseCase
 import com.example.deck.domain.usecase.local.AddCompletedWordUseCase
 import com.example.deck.domain.usecase.local.ClearCompletedDeckUseCase
 import com.example.deck.domain.usecase.local.GetCompletedDeckUseCase
+import com.example.deck.domain.usecase.local.GetCurrentUserUseCase
+import com.example.deck.domain.usecase.local.LogOutUseCase
 import com.example.deck.domain.usecase.local.ShouldSendCompletedDeckUseCase
 import com.example.deck.domain.usecase.remote.GetLearnDeckUseCase
 import com.example.deck.domain.usecase.remote.GetRepeatDeckUseCase
@@ -20,6 +20,8 @@ import com.example.deck.presentation.state.DeckUiState
 import com.example.designsystem.components.alert.model.AlertData
 import com.example.designsystem.state.LoadError
 import com.example.designsystem.state.LoadingState
+import com.example.models.AuthState
+import com.example.models.AuthStateManager
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -40,7 +42,8 @@ class DeckViewModel @Inject constructor(
     private val getCompletedDeckUseCase : GetCompletedDeckUseCase,
     private val clearCompletedDeckUseCase : ClearCompletedDeckUseCase,
     private val logOutUseCase : LogOutUseCase,
-    private val getCurrentUserUseCase : GetCurrentUserUseCase
+    private val getCurrentUserUseCase : GetCurrentUserUseCase,
+    private val authStateManager : AuthStateManager
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(DeckUiState(isLoading = LoadingState.Idle))
@@ -51,16 +54,36 @@ class DeckViewModel @Inject constructor(
 
     init {
         handleEvent(DeckEvent.LoadDecks)
+
+        viewModelScope.launch {
+            authStateManager.shouldRefresh.collect {
+                handleEvent(DeckEvent.LoadDecks)
+            }
+        }
+
+        viewModelScope.launch {
+            authStateManager.authState.collect { state ->
+                when (state) {
+                    is AuthState.Authenticated -> {
+                        loadDecks()
+                    }
+
+                    else -> {
+                    }
+                }
+            }
+        }
     }
 
     fun handleEvent(event : DeckEvent) {
         when (event) {
-            DeckEvent.LoadDecks -> loadDecks()
+            is DeckEvent.LoadDecks -> loadDecks()
             is DeckEvent.SwitchDeck -> switchDeck(event.deckType)
             is DeckEvent.MarkWord -> markWord(event.wordId, event.isKnown)
             is DeckEvent.ResetDeck -> resetDeck(event.deckType)
-            DeckEvent.Logout -> logout()
-            DeckEvent.AlertHandled -> handleAlertDismissed()
+            is DeckEvent.Logout -> logout()
+            is DeckEvent.NavigateToProfile -> navigateToProfile()
+            is DeckEvent.AlertHandled -> handleAlertDismissed()
         }
     }
 
@@ -230,6 +253,12 @@ class DeckViewModel @Inject constructor(
                     )
                 }
             }
+        }
+    }
+
+    private fun navigateToProfile() {
+        viewModelScope.launch {
+            _navigationEvent.emit(DeckNavigationEvent.NavigateToProfile)
         }
     }
 

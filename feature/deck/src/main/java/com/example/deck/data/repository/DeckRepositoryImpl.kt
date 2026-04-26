@@ -32,7 +32,8 @@ internal class DeckRepositoryImpl @Inject constructor(
                 status = dto.repetitionsCount,
                 originalWord = dto.word,
                 wordTranslate = dto.translation,
-                wordTranscription = dto.transcription
+                wordTranscription = dto.transcription,
+                example = dto.example ?: EMPTY_STRING
             )
         }
     }
@@ -54,7 +55,8 @@ internal class DeckRepositoryImpl @Inject constructor(
                 status = dto.repetitionsCount,
                 originalWord = dto.word,
                 wordTranslate = dto.translation,
-                wordTranscription = dto.transcription
+                wordTranscription = dto.transcription,
+                example = dto.example ?: EMPTY_STRING
             )
         }
     }
@@ -97,4 +99,8 @@ internal class DeckRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getCurrentUser() : User? = authLocalDataSource.getCurrentUser()
+
+    companion object {
+        private const val EMPTY_STRING = ""
+    }
 }

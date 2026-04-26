@@ -10,7 +10,8 @@ object WordCardMapper {
             id = wordCard.id,
             originalWord = wordCard.originalWord,
             wordTranslate = wordCard.wordTranslate,
-            wordTranscription = formatTranscription(wordCard.wordTranscription)
+            wordTranscription = formatTranscription(wordCard.wordTranscription),
+            example = wordCard.example
         )
     }
 

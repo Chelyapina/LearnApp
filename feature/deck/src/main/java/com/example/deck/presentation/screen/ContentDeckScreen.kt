@@ -7,13 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
@@ -38,7 +31,6 @@ fun ContentDeckScreen(
     state : DeckScreen.Content,
     viewModel : DeckViewModel,
     onCardClick : () -> Unit,
-    onLogoutClick : () -> Unit,
     modifier : Modifier = Modifier
 ) {
     val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
@@ -120,25 +112,6 @@ fun ContentDeckScreen(
                     deckType = currentDeck.type
                 )
             }
-        }
-
-        Button(
-            onClick = onLogoutClick,
-            modifier = Modifier
-                .padding(16.dp)
-                .fillMaxWidth(0.8f),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.errorContainer,
-                contentColor = MaterialTheme.colorScheme.onErrorContainer
-            )
-        ) {
-            Icon(
-                imageVector = Icons.Default.Clear,
-                contentDescription = null,
-                modifier = Modifier.size(18.dp)
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Text("Выйти")
         }
     }
 }
