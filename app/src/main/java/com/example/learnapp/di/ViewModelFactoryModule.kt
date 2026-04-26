@@ -6,6 +6,8 @@ import com.example.authorization.presentation.di.AuthViewModelFactory
 import com.example.authorization.presentation.viewmodel.AuthViewModel
 import com.example.deck.presentation.di.DeckViewModelFactory
 import com.example.deck.presentation.viewmodel.DeckViewModel
+import com.example.settings.presentation.SettingsViewModel
+import com.example.settings.presentation.di.SettingsViewModelFactory
 import com.example.splash.di.SplashViewModelFactory
 import com.example.splash.presentation.SplashViewModel
 import dagger.Module
@@ -20,6 +22,7 @@ object ViewModelFactoryModule {
     fun provideViewModelFactory(
         authViewModelFactory : AuthViewModelFactory,
         deckViewModelFactory : DeckViewModelFactory,
+        settingsViewModelFactory : SettingsViewModelFactory,
         splashViewModelFactory : SplashViewModelFactory
     ) : ViewModelProvider.Factory {
         return object : ViewModelProvider.Factory {
@@ -32,6 +35,10 @@ object ViewModelFactoryModule {
 
                     modelClass.isAssignableFrom(DeckViewModel::class.java) -> {
                         deckViewModelFactory.create(modelClass)
+                    }
+
+                    modelClass.isAssignableFrom(SettingsViewModel::class.java) -> {
+                        settingsViewModelFactory.create(modelClass)
                     }
 
                     modelClass.isAssignableFrom(SplashViewModel::class.java) -> {

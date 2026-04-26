@@ -36,7 +36,7 @@ import com.example.designsystem.components.appbar.CommonAppBar
 @Composable
 fun ProfileScreen(
     viewModel: DeckViewModel,
-    onBackClick : () -> Unit,
+    onBackClick : () -> Unit, onSettingsClick : () -> Unit,
     modifier : Modifier = Modifier
 ) {
     Scaffold(
@@ -64,7 +64,8 @@ fun ProfileScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clip(MaterialTheme.shapes.medium)
-                    .clickable(onClick = {}), headlineContent = {
+                    .clickable(onClick = onSettingsClick),
+                headlineContent = {
                 Text(text = stringResource(id = R.string.settings))
             }, supportingContent = {
                 Text(text = stringResource(id = R.string.settings_description))

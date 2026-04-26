@@ -66,6 +66,6 @@ internal class DeckRemoteDataSource @Inject constructor(
     }
 
     private suspend fun getAuthToken() : String {
-        return authLocalDataSource.getToken() ?: throw NetworkException.UnauthorizedError
+        return authLocalDataSource.getToken() ?: throw NetworkException.UnauthorizedError(null)
     }
 }

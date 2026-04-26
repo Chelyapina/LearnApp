@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_title">Настройки</string>
+    <string name="limits_title">Лимиты слов</string>
+    <string name="limit_new_words">Лимит новых слов</string>
+    <string name="limit_words_for_repeat">Лимит слов для повторений</string>
+    <string name="change_password_title">Смена пароля</string>
+    <string name="new_password_optional">Новый пароль (опционально)</string>
+    <string name="confirm_new_password">Повторите новый пароль</string>
+    <string name="confirm_changes_title">Подтверждение изменений</string>
+    <string name="old_password_required">Старый пароль *</string>
+    <string name="required_field">Обязательное поле</string>
+    <string name="save_button">Сохранить</string>
+    <string name="visible_password">Скрыть пароль</string>
+    <string name="no_visible_password">Показать пароль</string>
+    <string name="password_mismatch">Пароли не совпадают</string>
+    <string name="min_value_3">3</string>
+    <string name="max_value_30">30</string>
+</resources>

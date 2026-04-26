@@ -1,9 +1,9 @@
 package com.example.network.exception
 
-sealed class NetworkException(message : String) : Exception(message) {
+sealed class NetworkException(message: String?) : Exception(message ?: "Unknown error") {
     object NetworkError : NetworkException("Network error occurred")
     object TimeoutError : NetworkException("Request timeout")
-    object ServerError : NetworkException("Server error")
-    object UnauthorizedError : NetworkException("Invalid credentials")
-    object UnknownError : NetworkException("Unknown error")
+    data class ServerError(val errorMessage: String?) : NetworkException(errorMessage ?: "Server error")
+    data class UnauthorizedError(val errorMessage: String?) : NetworkException(errorMessage ?: "Invalid credentials")
+    data class UnknownError(val errorMessage: String?) : NetworkException(errorMessage ?: "Unknown error")
 }
