@@ -12,7 +12,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.BarChart
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -63,9 +63,9 @@ fun CommonAppBar(
 
             is AppBarState.TwoActions -> {
                 AppBarIconButton(
-                    imageVector = Icons.Filled.Menu,
-                    contentDescription = stringResource(R.string.description_icon_menu),
-                    onClick = state.onMenuClick,
+                    imageVector = Icons.Filled.BarChart,
+                    contentDescription = stringResource(R.string.description_icon_statistics),
+                    onClick = state.onStatisticsClick,
                     tint = contentColor
                 )
                 InitialAvatarButton(
