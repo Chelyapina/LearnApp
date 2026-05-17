@@ -29,11 +29,13 @@ import com.example.designsystem.state.LoadingState
 @Composable
 fun DeckScreen(
     viewModel: DeckViewModel,
+    onNavigateToStatistics :  () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     DeckScreenContent(
+        onNavigateToStatistics = onNavigateToStatistics,
         viewModel = viewModel,
         uiState = uiState
     )
@@ -66,7 +68,8 @@ fun DeckScreen(
 @Composable
 fun DeckScreenContent(
     modifier: Modifier = Modifier,
-    viewModel: DeckViewModel,
+    onNavigateToStatistics: () -> Unit,
+viewModel: DeckViewModel,
     uiState: DeckUiState
 ) {
     val userName = uiState.user?.name ?: ""
@@ -77,7 +80,7 @@ fun DeckScreenContent(
                 modifier = Modifier.padding(16.dp),
                 state = AppBarState.TwoActions(
                     firstName = userName,
-                    onMenuClick = {},
+                    onStatisticsClick = onNavigateToStatistics,
                     onAvatarClick = {
                         viewModel.handleEvent(DeckEvent.NavigateToProfile)
                     },

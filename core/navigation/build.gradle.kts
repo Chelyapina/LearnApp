@@ -40,6 +40,7 @@ dependencies {
     implementation(project(":feature:deck"))
     implementation(project(":feature:settings"))
     implementation(project(":feature:splash"))
+    implementation(project(":feature:statistics"))
 
     implementation(project(":core:security"))
     implementation(project(":core:models"))
