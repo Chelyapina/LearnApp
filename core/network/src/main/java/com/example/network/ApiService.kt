@@ -1,11 +1,13 @@
 package com.example.network
 
 import com.example.network.modelDto.AuthResponseDto
+import com.example.network.modelDto.DailyStatDto
 import com.example.network.modelDto.LoginRequestDto
 import com.example.network.modelDto.SettingsResponseDto
 import com.example.network.modelDto.UpdateSettingsRequestDto
 import com.example.network.modelDto.WordCardDto
 import com.example.network.modelDto.WordCompletedDto
+import com.example.network.modelDto.YearlyStatDto
 import com.example.network.utils.NetworkConstants
 import retrofit2.Response
 import retrofit2.http.Body
@@ -13,6 +15,7 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.PATCH
 import retrofit2.http.POST
+import retrofit2.http.Query
 
 interface ApiService {
     @POST(NetworkConstants.LOGIN)
@@ -42,4 +45,16 @@ interface ApiService {
     suspend fun updateSettings(
         @Header("Authorization") token : String, @Body request : UpdateSettingsRequestDto
     ) : Response<Unit>
+
+    @GET(NetworkConstants.STATISTICS_YEAR)
+    suspend fun getYearlyStatistics(
+        @Header("Authorization") token : String, @Query("year") year : Int
+    ) : Response<List<YearlyStatDto>>
+
+    @GET(NetworkConstants.STATISTICS_MONTH)
+    suspend fun getMonthlyStatistics(
+        @Header("Authorization") token : String,
+        @Query("year") year : Int,
+        @Query("month") month : Int
+    ) : Response<List<DailyStatDto>>
 }
