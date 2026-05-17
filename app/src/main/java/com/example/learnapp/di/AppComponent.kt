@@ -8,6 +8,7 @@ import com.example.network.di.NetworkModule
 import com.example.security.di.SecurityModule
 import com.example.settings.di.PublicSettingsModule
 import com.example.splash.di.SplashModule
+import com.example.statistics.di.StatisticsModule
 import com.example.storage.di.StorageModule
 import dagger.Component
 import javax.inject.Singleton
@@ -22,6 +23,7 @@ import javax.inject.Singleton
         PublicDeckModule::class,
         SecurityModule::class,
         SplashModule::class,
+        StatisticsModule::class,
         StorageModule::class,
         PublicSettingsModule::class,
         ViewModelFactoryModule::class

@@ -47,6 +47,7 @@ dependencies {
     implementation(project(":feature:deck"))
     implementation(project(":feature:authorization"))
     implementation(project(":feature:settings"))
+    implementation(project(":feature:statistics"))
 
     implementation(project(":core:navigation"))
     implementation(project(":core:network"))
