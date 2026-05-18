@@ -45,6 +45,7 @@ dependencies {
     implementation(project(":core:models"))
     implementation(project(":feature:splash"))
     implementation(project(":feature:deck"))
+    implementation(project(":feature:dictionary"))
     implementation(project(":feature:authorization"))
     implementation(project(":feature:settings"))
     implementation(project(":feature:statistics"))
@@ -69,6 +70,7 @@ dependencies {
     implementation(libs.androidx.compose.material3)
     implementation(libs.lifecycle.viewmodel.compose)
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.compose.material.icons.extended)
 
     // Dagger 2
     implementation(libs.dagger)

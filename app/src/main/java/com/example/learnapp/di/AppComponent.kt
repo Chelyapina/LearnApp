@@ -3,6 +3,7 @@ package com.example.learnapp.di
 import com.example.authorization.di.PublicAuthModule
 import com.example.learnapp.MainActivity
 import com.example.deck.di.PublicDeckModule
+import com.example.dictionary.di.DictionaryModule
 import com.example.models.di.ModelsModule
 import com.example.network.di.NetworkModule
 import com.example.security.di.SecurityModule
@@ -17,6 +18,7 @@ import javax.inject.Singleton
 @Component(
     modules = [
         AppModule::class,
+        DictionaryModule::class,
         ModelsModule::class,
         NetworkModule::class,
         PublicAuthModule::class,
