@@ -36,7 +36,9 @@ import com.example.designsystem.components.appbar.CommonAppBar
 @Composable
 fun ProfileScreen(
     viewModel: DeckViewModel,
-    onBackClick : () -> Unit, onSettingsClick : () -> Unit,
+    onBackClick : () -> Unit,
+    onSettingsClick : () -> Unit,
+    onDictionaryClick : () -> Unit,
     modifier : Modifier = Modifier
 ) {
     Scaffold(
@@ -74,7 +76,8 @@ fun ProfileScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clip(MaterialTheme.shapes.medium)
-                    .clickable(onClick = {}), headlineContent = {
+                    .clickable(onClick = onDictionaryClick),
+                headlineContent = {
                 Text(text = stringResource(id = R.string.dictionaries))
             }, supportingContent = {
                 Text(text = stringResource(id = R.string.dictionaries_description))

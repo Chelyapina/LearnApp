@@ -18,6 +18,8 @@ import com.example.deck.presentation.screen.DeckScreen
 import com.example.deck.presentation.state.DeckNavigationEvent
 import com.example.deck.presentation.viewmodel.DeckViewModel
 import com.example.deck.profile.ProfileScreen
+import com.example.dictionary.presentation.DictionaryScreen
+import com.example.dictionary.presentation.DictionaryViewModel
 import com.example.models.AuthState
 import com.example.settings.presentation.navigation.SettingsDestination
 import com.example.splash.presentation.SplashViewModel
@@ -41,6 +43,10 @@ fun LearnAppNavigation(
 
     val statisticsViewModel: StatisticsViewModel = viewModel(
         factory = viewModelFactory, key = "statistics"
+    )
+
+    val dictionaryViewModel: DictionaryViewModel = viewModel(
+        factory = viewModelFactory, key = "dictionary"
     )
 
     val authState by splashViewModel.authState.collectAsStateWithLifecycle()
@@ -141,6 +147,9 @@ fun LearnAppNavigation(
                 onSettingsClick = {
                     navController.navigate("settings")
                 },
+                onDictionaryClick = {
+                    navController.navigate("dictionaries")
+                },
                 modifier = Modifier.fillMaxSize()
             )
         }
@@ -153,6 +162,13 @@ fun LearnAppNavigation(
         composable("statistics") {
             StatisticsScreen(
                 viewModel = statisticsViewModel,
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
+        composable("dictionaries") {
+            DictionaryScreen(
+                viewModel = dictionaryViewModel,
                 onBackClick = { navController.popBackStack() }
             )
         }

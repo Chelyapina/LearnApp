@@ -38,6 +38,7 @@ android {
 dependencies {
     implementation(project(":feature:authorization"))
     implementation(project(":feature:deck"))
+    implementation(project(":feature:dictionary"))
     implementation(project(":feature:settings"))
     implementation(project(":feature:splash"))
     implementation(project(":feature:statistics"))
