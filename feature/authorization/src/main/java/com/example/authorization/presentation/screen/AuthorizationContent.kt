@@ -79,9 +79,9 @@ fun AuthorizationContent(
         when (uiState.screen) {
             is AuthScreen.Login -> {
                 LoginTextField(
-                    email = uiState.email,
-                    emailError = uiState.emailError,
-                    onEmailChanged = { onEvent(AuthEvent.EmailChanged(it)) },
+                    email = uiState.login,
+                    emailError = uiState.loginError,
+                    onEmailChanged = { onEvent(AuthEvent.LoginChanged(it)) },
                     onSubmit = { onEvent(AuthEvent.SubmitLogin) },
                     label = stringResource(R.string.login_textfield)
                 )

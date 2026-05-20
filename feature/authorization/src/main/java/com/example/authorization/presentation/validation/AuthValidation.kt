@@ -6,10 +6,10 @@ object AuthValidation {
         data class Invalid(val errorMessage: String) : ValidationResult()
     }
 
-    fun validateEmail(email: String): ValidationResult {
+    fun validateLogin(login: String): ValidationResult {
         return when {
-            email.isBlank() -> ValidationResult.Invalid(ErrorMessages.EMPTY_EMAIL)
-            !email.matches(Constraints.ENGLISH_LETTERS_PATTERN) ->
+            login.isBlank() -> ValidationResult.Invalid(ErrorMessages.EMPTY_LOGIN)
+            !login.matches(Constraints.ENGLISH_LETTERS_PATTERN) ->
                 ValidationResult.Invalid(ErrorMessages.NON_ENGLISH_PASSWORD)
             else -> ValidationResult.Valid
         }
@@ -35,7 +35,7 @@ object AuthValidation {
     }
 
     object ErrorMessages {
-        const val EMPTY_EMAIL = "Введите email"
+        const val EMPTY_LOGIN = "Введите логин"
         const val EMPTY_PASSWORD = "Введите пароль"
 
         fun passwordTooShort() =
