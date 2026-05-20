@@ -7,6 +7,7 @@ import com.example.designsystem.state.LoadingState
 import com.example.network.exception.NetworkException
 import com.example.settings.domain.usecase.GetSettingsUseCase
 import com.example.settings.domain.usecase.UpdateSettingsUseCase
+import com.example.validation.AuthValidation
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -88,10 +89,31 @@ class SettingsViewModel @Inject constructor(
             return
         }
 
+        when (val result = AuthValidation.validatePassword(currentState.oldPassword)) {
+            is AuthValidation.ValidationResult.Invalid -> {
+                showAlert(result.errorMessage)
+                return
+            }
+
+            is AuthValidation.ValidationResult.Valid -> {}
+        }
+
         val hasPasswordChange = currentState.newPassword.isNotBlank()
-        if (hasPasswordChange && currentState.newPassword != currentState.confirmPassword) {
-            showAlert(PASSWORD_MISMATCH_MESSAGE)
-            return
+
+        if (hasPasswordChange) {
+            when (val result = AuthValidation.validatePassword(currentState.newPassword)) {
+                is AuthValidation.ValidationResult.Invalid -> {
+                    showAlert(result.errorMessage)
+                    return
+                }
+
+                is AuthValidation.ValidationResult.Valid -> {}
+            }
+
+            if (currentState.newPassword != currentState.confirmPassword) {
+                showAlert(PASSWORD_MISMATCH_MESSAGE)
+                return
+            }
         }
 
         viewModelScope.launch {

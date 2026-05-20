@@ -1,4 +1,4 @@
-package com.example.authorization.presentation.validation
+package com.example.validation
 
 object AuthValidation {
     sealed class ValidationResult {
@@ -9,8 +9,7 @@ object AuthValidation {
     fun validateLogin(login: String): ValidationResult {
         return when {
             login.isBlank() -> ValidationResult.Invalid(ErrorMessages.EMPTY_LOGIN)
-            !login.matches(Constraints.ENGLISH_LETTERS_PATTERN) ->
-                ValidationResult.Invalid(ErrorMessages.NON_ENGLISH_PASSWORD)
+            !login.matches(Constraints.LOGIN_PATTERN) -> ValidationResult.Invalid(ErrorMessages.INVALID_LOGIN)
             else -> ValidationResult.Valid
         }
     }
@@ -20,30 +19,27 @@ object AuthValidation {
             password.isBlank() -> ValidationResult.Invalid(ErrorMessages.EMPTY_PASSWORD)
             password.length < Constraints.MIN_PASSWORD_LENGTH ->
                 ValidationResult.Invalid(ErrorMessages.passwordTooShort())
-            password.length > Constraints.MAX_PASSWORD_LENGTH ->
-                ValidationResult.Invalid(ErrorMessages.passwordTooLong())
-            !password.matches(Constraints.ENGLISH_LETTERS_PATTERN) ->
-                ValidationResult.Invalid(ErrorMessages.NON_ENGLISH_PASSWORD)
+            !password.matches(Constraints.PASSWORD_PATTERN) -> ValidationResult.Invalid(
+                ErrorMessages.INVALID_PASSWORD
+            )
             else -> ValidationResult.Valid
         }
     }
 
     object Constraints {
         const val MIN_PASSWORD_LENGTH = 6
-        const val MAX_PASSWORD_LENGTH = 12
-        val ENGLISH_LETTERS_PATTERN = Regex("^[a-zA-Z]*\$")
+        val LOGIN_PATTERN = Regex("^[a-zA-Z0-9]+\$")
+        val PASSWORD_PATTERN = Regex("^[a-zA-Z0-9!@#\$%^&*()_+\\-=\\[\\]{};':\",./<>?`~]*\$")
     }
 
     object ErrorMessages {
         const val EMPTY_LOGIN = "Введите логин"
         const val EMPTY_PASSWORD = "Введите пароль"
+        const val INVALID_LOGIN = "Логин может содержать только английские буквы и цифры"
+        const val INVALID_PASSWORD =
+                "Пароль может содержать только латиницу, цифры и специальные символы"
 
         fun passwordTooShort() =
                 "Пароль должен содержать минимум ${Constraints.MIN_PASSWORD_LENGTH} символов"
-
-        fun passwordTooLong() =
-                "Пароль не должен превышать ${Constraints.MAX_PASSWORD_LENGTH} символов"
-
-        const val NON_ENGLISH_PASSWORD = "Используйте только английские буквы"
     }
 }

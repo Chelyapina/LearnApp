@@ -7,11 +7,11 @@ import com.example.authorization.domain.usecase.ScenarioLoginUseCase
 import com.example.authorization.presentation.state.AuthEvent
 import com.example.authorization.presentation.state.AuthScreen
 import com.example.authorization.presentation.state.AuthUiState
-import com.example.authorization.presentation.validation.AuthValidation
 import com.example.designsystem.components.alert.model.AlertData
 import com.example.designsystem.state.LoadError
 import com.example.designsystem.state.LoadingState
 import com.example.models.AuthStateManager
+import com.example.validation.AuthValidation
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
