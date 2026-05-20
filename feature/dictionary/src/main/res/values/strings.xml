@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dictionaries">Словари</string>
+    <string name="retry">Повторить</string>
+    <string name="system">Системный</string>
+    <string name="words_count">%d слов</string>
+    <string name="no_words">Нет слов в словаре</string>
+    <string name="add_word">Добавить слово</string>
+    <string name="delete_dictionary">Удалить словарь</string>
+    <string name="remove_word">Удалить слово</string>
+    <string name="show_less">Скрыть</string>
+    <string name="show_more">Показать еще</string>
+    <string name="create_dictionary">Создать словарь</string>
+    <string name="dictionary_name">Название</string>
+    <string name="description_optional">Описание (необязательно)</string>
+    <string name="language">Язык</string>
+    <string name="cancel">Отмена</string>
+    <string name="create">Создать</string>
+    <string name="add_word_to_dictionary">Добавить слово в словарь</string>
+    <string name="search_word">Поиск слова</string>
+    <string name="search_hint">Введите минимум 2 символа…</string>
+    <string name="search_results">Результаты поиска:</string>
+    <string name="no_words_found">Слова не найдены</string>
+    <string name="add_words">Добавить</string>
+</resources>

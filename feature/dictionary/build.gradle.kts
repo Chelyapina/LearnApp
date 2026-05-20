@@ -6,15 +6,15 @@ plugins {
 }
 
 android {
-    namespace = "com.example.navigation"
-    compileSdk = 36
-
-    buildFeatures {
-        compose = true
+    namespace = "com.example.dictionary"
+    compileSdk {
+        version = release(36)
     }
 
     defaultConfig {
         minSdk = 24
+
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
@@ -36,23 +36,32 @@ android {
 }
 
 dependencies {
-    implementation(project(":feature:authorization"))
-    implementation(project(":feature:deck"))
-    implementation(project(":feature:dictionary"))
-    implementation(project(":feature:settings"))
-    implementation(project(":feature:splash"))
-    implementation(project(":feature:statistics"))
+    implementation(project(":shared:designsystem"))
 
     implementation(project(":core:security"))
-    implementation(project(":core:models"))
+    implementation(project(":core:network"))
 
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.material)
+
+    implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.compose.ui)
     implementation(platform(libs.androidx.compose.bom))
     implementation (libs.androidx.compose.runtime)
     implementation (libs.androidx.compose.runtime.livedata)
+    implementation(libs.androidx.compose.material3)
+    implementation(libs.lifecycle.viewmodel.compose)
+    implementation(libs.androidx.compose.material.icons.extended)
+
+    implementation(libs.retrofit.kotlinx.serialization)
 
     // Dagger 2
     implementation(libs.dagger)
+    implementation(libs.androidx.material3)
     ksp(libs.dagger.ksp)
 
-    implementation(libs.androidx.navigation.compose)
+    //preview
+    implementation(libs.androidx.compose.ui.tooling.preview)
+    debugImplementation(libs.androidx.compose.ui.tooling)
 }

@@ -6,6 +6,8 @@ import com.example.authorization.presentation.di.AuthViewModelFactory
 import com.example.authorization.presentation.viewmodel.AuthViewModel
 import com.example.deck.presentation.di.DeckViewModelFactory
 import com.example.deck.presentation.viewmodel.DeckViewModel
+import com.example.dictionary.presentation.DictionaryViewModel
+import com.example.dictionary.presentation.di.DictionaryViewModelFactory
 import com.example.settings.presentation.SettingsViewModel
 import com.example.settings.presentation.di.SettingsViewModelFactory
 import com.example.splash.di.SplashViewModelFactory
@@ -26,7 +28,8 @@ object ViewModelFactoryModule {
         deckViewModelFactory : DeckViewModelFactory,
         settingsViewModelFactory : SettingsViewModelFactory,
         splashViewModelFactory : SplashViewModelFactory,
-        statisticsViewModelFactory: StatisticsViewModelFactory
+        statisticsViewModelFactory: StatisticsViewModelFactory,
+        dictionaryViewModelFactory: DictionaryViewModelFactory
     ) : ViewModelProvider.Factory {
         return object : ViewModelProvider.Factory {
             @Suppress("UNCHECKED_CAST")
@@ -50,6 +53,10 @@ object ViewModelFactoryModule {
 
                     modelClass.isAssignableFrom(StatisticsViewModel::class.java) -> {
                         statisticsViewModelFactory.create(modelClass)
+                    }
+
+                    modelClass.isAssignableFrom(DictionaryViewModel::class.java) -> {
+                        dictionaryViewModelFactory.create(modelClass)
                     }
 
                     else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
