@@ -1,7 +1,7 @@
 package com.example.network.utils
 
 object NetworkConstants {
-    const val BASE_URL = "http://217.71.129.139:4186/"
+    const val BASE_URL = "http://217.71.129.139:5139/"
 
     const val TIMEOUT_SECONDS = 30L
 
@@ -10,4 +10,6 @@ object NetworkConstants {
     const val REPEAT_WORDS = "learning/words/repeat"
     const val COMPLETED_WORDS = "learning/progress"
     const val SETTINGS = "/users/settings"
+    const val STATISTICS_YEAR = "learning/statistics/year"
+    const val STATISTICS_MONTH = "learning/statistics/month"
 }

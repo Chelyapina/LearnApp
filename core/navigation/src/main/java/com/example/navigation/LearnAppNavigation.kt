@@ -2,7 +2,6 @@ package com.example.navigation
 
 import android.annotation.SuppressLint
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -22,6 +21,8 @@ import com.example.deck.profile.ProfileScreen
 import com.example.models.AuthState
 import com.example.settings.presentation.navigation.SettingsDestination
 import com.example.splash.presentation.SplashViewModel
+import com.example.statistics.presentation.StatisticsScreen
+import com.example.statistics.presentation.StatisticsViewModel
 
 @SuppressLint("RestrictedApi")
 @Composable
@@ -36,6 +37,10 @@ fun LearnAppNavigation(
 
     val deckViewModel: DeckViewModel = viewModel(
         factory = viewModelFactory, key = "deck"
+    )
+
+    val statisticsViewModel: StatisticsViewModel = viewModel(
+        factory = viewModelFactory, key = "statistics"
     )
 
     val authState by splashViewModel.authState.collectAsStateWithLifecycle()
@@ -122,6 +127,9 @@ fun LearnAppNavigation(
         composable("main") { backStackEntry ->
             DeckScreen(
                 viewModel = deckViewModel,
+                onNavigateToStatistics = {
+                    navController.navigate("statistics")
+                },
                 modifier = Modifier.fillMaxSize()
             )
         }
@@ -140,6 +148,13 @@ fun LearnAppNavigation(
         composable("settings") {
             SettingsDestination(
                 viewModelFactory = viewModelFactory, onBackClick = { navController.popBackStack() })
+        }
+
+        composable("statistics") {
+            StatisticsScreen(
+                viewModel = statisticsViewModel,
+                onBackClick = { navController.popBackStack() }
+            )
         }
     }
 }

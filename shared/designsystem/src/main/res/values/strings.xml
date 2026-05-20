@@ -1,7 +1,7 @@
 <resources>
     <!-- AppBar -->
     <string name="description_icon_back">Назад</string>
-    <string name="description_icon_menu">Меню</string>
+    <string name="description_icon_statistics">Статистика</string>
     <string name="default_initial">\?</string>
 
     <!-- Network Error -->

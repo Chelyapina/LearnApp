@@ -10,6 +10,8 @@ import com.example.settings.presentation.SettingsViewModel
 import com.example.settings.presentation.di.SettingsViewModelFactory
 import com.example.splash.di.SplashViewModelFactory
 import com.example.splash.presentation.SplashViewModel
+import com.example.statistics.presentation.StatisticsViewModel
+import com.example.statistics.presentation.di.StatisticsViewModelFactory
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -23,7 +25,8 @@ object ViewModelFactoryModule {
         authViewModelFactory : AuthViewModelFactory,
         deckViewModelFactory : DeckViewModelFactory,
         settingsViewModelFactory : SettingsViewModelFactory,
-        splashViewModelFactory : SplashViewModelFactory
+        splashViewModelFactory : SplashViewModelFactory,
+        statisticsViewModelFactory: StatisticsViewModelFactory
     ) : ViewModelProvider.Factory {
         return object : ViewModelProvider.Factory {
             @Suppress("UNCHECKED_CAST")
@@ -43,6 +46,10 @@ object ViewModelFactoryModule {
 
                     modelClass.isAssignableFrom(SplashViewModel::class.java) -> {
                         splashViewModelFactory.create()
+                    }
+
+                    modelClass.isAssignableFrom(StatisticsViewModel::class.java) -> {
+                        statisticsViewModelFactory.create(modelClass)
                     }
 
                     else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")

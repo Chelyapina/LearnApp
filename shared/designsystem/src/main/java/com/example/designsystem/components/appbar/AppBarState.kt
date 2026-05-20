@@ -6,7 +6,7 @@ sealed class AppBarState {
     ) : AppBarState()
     data class TwoActions(
         val firstName: String,
-        val onMenuClick: () -> Unit = {},
+        val onStatisticsClick: () -> Unit = {},
         val onAvatarClick: () -> Unit = {}
     ) : AppBarState()
     object Empty : AppBarState()
