@@ -11,6 +11,7 @@ import com.example.deck.domain.usecase.local.ShouldSendCompletedDeckUseCase
 import com.example.deck.domain.usecase.remote.GetLearnDeckUseCase
 import com.example.deck.domain.usecase.remote.GetRepeatDeckUseCase
 import com.example.deck.domain.usecase.remote.SetCompletedDeckUseCase
+import com.example.deck.domain.usecase.remote.CheckAnswerUseCase
 import com.example.deck.presentation.model.Deck
 import com.example.deck.presentation.model.DeckType
 import com.example.deck.presentation.state.DeckEvent
@@ -43,6 +44,7 @@ class DeckViewModel @Inject constructor(
     private val clearCompletedDeckUseCase : ClearCompletedDeckUseCase,
     private val logOutUseCase : LogOutUseCase,
     private val getCurrentUserUseCase : GetCurrentUserUseCase,
+    private val checkAnswerUseCase: CheckAnswerUseCase,
     private val authStateManager : AuthStateManager
 ) : ViewModel() {
 
@@ -274,6 +276,28 @@ class DeckViewModel @Inject constructor(
             message = message,
             confirmText = ALERT_CONFIRM,
             onConfirm = { handleEvent(DeckEvent.AlertHandled) })
+    }
+
+    private val _gameResult = MutableStateFlow<String?>(null)
+    val gameResult: StateFlow<String?> = _gameResult.asStateFlow()
+
+    fun checkWordAnswer(wordId: Int, userAnswer: String) {
+        viewModelScope.launch {
+            try {
+                val (isCorrect, correctAnswer) = checkAnswerUseCase(wordId, userAnswer)
+                if (isCorrect) {
+                    _gameResult.value = "Правильно!"
+                } else {
+                    _gameResult.value = "Не совсем. Правильный ответ: $correctAnswer"
+                }
+            } catch (e: Exception) {
+                _gameResult.value = "Ошибка проверки соединения"
+            }
+        }
+    }
+
+    fun clearGameResult() {
+        _gameResult.value = null
     }
 
     companion object {

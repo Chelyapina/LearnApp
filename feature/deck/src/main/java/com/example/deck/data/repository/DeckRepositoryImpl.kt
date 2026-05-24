@@ -7,6 +7,7 @@ import com.example.deck.domain.entity.User
 import com.example.deck.domain.entity.WordCard
 import com.example.deck.domain.entity.WordCompleted
 import com.example.deck.domain.repository.DeckRepository
+import com.example.network.modelDto.AnswerRequestDto
 import com.example.network.modelDto.WordCompletedDto
 import javax.inject.Inject
 
@@ -99,6 +100,12 @@ internal class DeckRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getCurrentUser() : User? = authLocalDataSource.getCurrentUser()
+
+    override suspend fun checkAnswer(wordId: Int, userAnswer: String): Pair<Boolean, String> {
+        val request = AnswerRequestDto(wordId = wordId, userAnswer = userAnswer)
+        val response = remoteDataSource.checkAnswer(request)
+        return Pair(response.correct, response.correctAnswer)
+    }
 
     companion object {
         private const val EMPTY_STRING = ""

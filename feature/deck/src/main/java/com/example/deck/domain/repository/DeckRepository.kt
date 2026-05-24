@@ -12,6 +12,7 @@ interface DeckRepository {
     suspend fun clearCompletedDeck()
     suspend fun addToCompletedDeck(wordId : Int, status : Boolean)
     suspend fun shouldSendCompletedDeck() : Boolean
+    suspend fun checkAnswer(wordId: Int, userAnswer: String): Pair<Boolean, String>
     suspend fun logout()
     suspend fun getCurrentUser() : User?
 }

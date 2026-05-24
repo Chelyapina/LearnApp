@@ -23,4 +23,6 @@
     <string name="dictionaries">Словари</string>
     <string name="dictionaries_description">Смотри по категориям</string>
     <string name="profile_exit">Выйти</string>
+    <string name="game_title">Тренировка слов</string>
+    <string name="game_description">Запустить интервальное повторение</string>
 </resources>

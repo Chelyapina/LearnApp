@@ -12,6 +12,7 @@ import com.example.deck.domain.usecase.remote.GetLearnDeckUseCase
 import com.example.deck.domain.usecase.remote.GetRepeatDeckUseCase
 import com.example.deck.domain.usecase.remote.SetCompletedDeckUseCase
 import com.example.deck.presentation.viewmodel.DeckViewModel
+import com.example.deck.domain.usecase.remote.CheckAnswerUseCase
 import com.example.models.AuthStateManager
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -27,6 +28,7 @@ class DeckViewModelFactory @Inject constructor(
     private val clearCompletedDeckUseCase : ClearCompletedDeckUseCase,
     private val logOutUseCase : LogOutUseCase,
     private val getCurrentUserUseCase : GetCurrentUserUseCase,
+    private val checkAnswerUseCase: CheckAnswerUseCase,
     private val authStateManager : AuthStateManager
 ) : ViewModelProvider.Factory {
 
@@ -42,6 +44,7 @@ class DeckViewModelFactory @Inject constructor(
                 clearCompletedDeckUseCase = clearCompletedDeckUseCase,
                 logOutUseCase = logOutUseCase,
                 getCurrentUserUseCase = getCurrentUserUseCase,
+                checkAnswerUseCase = checkAnswerUseCase,
                 authStateManager = authStateManager
             ) as T
         }
