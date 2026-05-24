@@ -16,6 +16,7 @@ internal class DeckRepositoryImpl @Inject constructor(
     private val completedDeckLocalDataSource : CompletedDeckLocalDataSource,
     private val authLocalDataSource : AuthLocalDataSource
 ) : DeckRepository {
+
     override suspend fun getLearnDeck() : List<WordCard> {
         val token = authLocalDataSource.getToken()
         if (token.isNullOrEmpty()) {
@@ -84,15 +85,15 @@ internal class DeckRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getCompletedDeck() : List<WordCompleted> =
-            completedDeckLocalDataSource.getCompletedDeck()
+        completedDeckLocalDataSource.getCompletedDeck()
 
     override suspend fun clearCompletedDeck() = completedDeckLocalDataSource.clearCompletedDeck()
 
     override suspend fun addToCompletedDeck(wordId : Int, status : Boolean) =
-            completedDeckLocalDataSource.addCompletedWord(wordId, status)
+        completedDeckLocalDataSource.addCompletedWord(wordId, status)
 
     override suspend fun shouldSendCompletedDeck() : Boolean =
-            completedDeckLocalDataSource.hasReachedLimit()
+        completedDeckLocalDataSource.hasReachedLimit()
 
     override suspend fun logout() {
         authLocalDataSource.clearUserData()

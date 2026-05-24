@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -52,7 +53,7 @@ fun GameScreen(
                 }
             )
         },
-        modifier = modifier
+        modifier = modifier.systemBarsPadding()
     ) { paddingValues ->
         Box(
             modifier = Modifier
@@ -84,17 +85,19 @@ fun GameScreen(
                     verticalArrangement = Arrangement.Center
                 ) {
                     Text(
-                        text = "Как переводится слово:",
+                        text = "Как переводится на английский:",
                         fontSize = 16.sp,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = currentWord.originalWord,
+                        text = currentWord.wordTranslate, // Показываем русское слово
                         fontSize = 36.sp,
                         style = MaterialTheme.typography.headlineLarge
                     )
-                    if (currentWord.wordTranscription.isNotEmpty()) {
+
+                    // Показываем транскрипцию АНГЛИЙСКОГО слова только ПОСЛЕ проверки ответа
+                    if (currentWord.wordTranscription.isNotEmpty() && gameResult != null) {
                         Text(
                             text = "[${currentWord.wordTranscription}]",
                             fontSize = 18.sp,
