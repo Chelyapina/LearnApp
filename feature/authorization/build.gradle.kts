@@ -38,6 +38,7 @@ dependencies {
     implementation(project(":core:storage"))
 
     implementation(project(":shared:designsystem"))
+    implementation(project(":shared:validation"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

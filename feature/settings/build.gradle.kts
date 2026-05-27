@@ -37,11 +37,12 @@ android {
 }
 
 dependencies {
-    implementation(project(":shared:designsystem"))
-
     implementation(project(":core:security"))
     implementation(project(":core:models"))
     implementation(project(":core:network"))
+
+    implementation(project(":shared:designsystem"))
+    implementation(project(":shared:validation"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

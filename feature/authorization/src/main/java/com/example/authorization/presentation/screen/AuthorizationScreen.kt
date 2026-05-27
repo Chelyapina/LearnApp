@@ -14,6 +14,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.authorization.R
 import com.example.authorization.presentation.state.AuthEvent
@@ -86,7 +87,7 @@ fun AuthorizationScreenContent(
     Scaffold(
         topBar = {
             CommonAppBar(
-                state = when (uiState.screen) {
+                modifier = Modifier.padding(16.dp), state = when (uiState.screen) {
                     is AuthScreen.Login -> AppBarState.Empty
                     is AuthScreen.Password -> AppBarState.Back()
                 }, onBackClick = { viewModel.handleEvent(AuthEvent.BackPressed) }

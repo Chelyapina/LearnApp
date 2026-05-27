@@ -15,7 +15,7 @@ fun AuthorizationContentPreview_LoginStateLight() {
     LearnAppTheme {
         AuthorizationContent(
             uiState = AuthUiState(
-            screen = AuthScreen.Login, email = "user@example.com", isLoading = LoadingState.Idle
+            screen = AuthScreen.Login, login = "user@example.com", isLoading = LoadingState.Idle
         ), onEvent = {}, onTogglePasswordVisibility = {})
     }
 }
@@ -27,9 +27,9 @@ fun AuthorizationContentPreview_LoginStateWithError() {
         AuthorizationContent(
             uiState = AuthUiState(
             screen = AuthScreen.Login,
-            email = "invalid.email",
+            login = "invalid.email",
             isLoading = LoadingState.Idle,
-            emailError = "Некорректный email"
+            loginError = "Некорректный email"
         ), onEvent = {}, onTogglePasswordVisibility = {})
     }
 }
@@ -40,8 +40,8 @@ fun AuthorizationContentPreview_PasswordStateLight() {
     LearnAppTheme {
         AuthorizationContent(
             uiState = AuthUiState(
-            screen = AuthScreen.Password(email = "user@example.com"),
-            email = "user@example.com",
+            screen = AuthScreen.Password(login = "user@example.com"),
+            login = "user@example.com",
             password = "mypassword123",
             isPasswordVisible = false,
             isLoading = LoadingState.Idle
@@ -55,8 +55,8 @@ fun AuthorizationContentPreview_PasswordStateWithError() {
     LearnAppTheme {
         AuthorizationContent(
             uiState = AuthUiState(
-            screen = AuthScreen.Password(email = "user@example.com"),
-            email = "user@example.com",
+            screen = AuthScreen.Password(login = "user@example.com"),
+            login = "user@example.com",
             password = "123",
             isPasswordVisible = false,
             isLoading = LoadingState.Idle,
@@ -71,8 +71,8 @@ fun AuthorizationContentPreview_PasswordStateVisible() {
     LearnAppTheme {
         AuthorizationContent(
             uiState = AuthUiState(
-            screen = AuthScreen.Password(email = "user@example.com"),
-            email = "user@example.com",
+            screen = AuthScreen.Password(login = "user@example.com"),
+            login = "user@example.com",
             password = "mypassword123",
             isPasswordVisible = true,
             isLoading = LoadingState.Idle
@@ -86,7 +86,7 @@ fun AuthorizationContentPreview_LoginStateDark() {
     LearnAppTheme {
         AuthorizationContent(
             uiState = AuthUiState(
-            screen = AuthScreen.Login, email = "user@example.com", isLoading = LoadingState.Idle
+            screen = AuthScreen.Login, login = "user@example.com", isLoading = LoadingState.Idle
         ), onEvent = {}, onTogglePasswordVisibility = {})
     }
 }
@@ -97,8 +97,8 @@ fun AuthorizationContentPreview_PasswordStateDark() {
     LearnAppTheme {
         AuthorizationContent(
             uiState = AuthUiState(
-            screen = AuthScreen.Password(email = "user@example.com"),
-            email = "user@example.com",
+            screen = AuthScreen.Password(login = "user@example.com"),
+            login = "user@example.com",
             password = "mypassword123",
             isPasswordVisible = false,
             isLoading = LoadingState.Idle

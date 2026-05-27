@@ -7,11 +7,11 @@ import com.example.authorization.domain.usecase.ScenarioLoginUseCase
 import com.example.authorization.presentation.state.AuthEvent
 import com.example.authorization.presentation.state.AuthScreen
 import com.example.authorization.presentation.state.AuthUiState
-import com.example.authorization.presentation.validation.AuthValidation
 import com.example.designsystem.components.alert.model.AlertData
 import com.example.designsystem.state.LoadError
 import com.example.designsystem.state.LoadingState
 import com.example.models.AuthStateManager
+import com.example.validation.AuthValidation
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -29,7 +29,7 @@ class AuthViewModel @Inject constructor(
 
     fun handleEvent(event : AuthEvent) {
         when (event) {
-            is AuthEvent.EmailChanged -> updateEmail(event.email)
+            is AuthEvent.LoginChanged -> updateLogin(event.login)
             is AuthEvent.PasswordChanged -> updatePassword(event.password)
             is AuthEvent.SubmitLogin -> submitLogin()
             is AuthEvent.SubmitPassword -> submitPassword()
@@ -38,10 +38,10 @@ class AuthViewModel @Inject constructor(
         }
     }
 
-    private fun updateEmail(email : String) {
+    private fun updateLogin(login : String) {
         _uiState.update { state ->
             state.copy(
-                email = email, emailError = null
+                login = login, loginError = null
             )
         }
     }
@@ -55,13 +55,13 @@ class AuthViewModel @Inject constructor(
     }
 
     private fun submitLogin() {
-        val email = _uiState.value.email.trim()
+        val login = _uiState.value.login.trim()
 
-        when (val validationResult = AuthValidation.validateEmail(email)) {
+        when (val validationResult = AuthValidation.validateLogin(login)) {
             is AuthValidation.ValidationResult.Invalid -> {
                 _uiState.update { state ->
                     state.copy(
-                        emailError = validationResult.errorMessage, isLoading = LoadingState.Error(
+                        loginError = validationResult.errorMessage, isLoading = LoadingState.Error(
                             LoadError.Validation(validationResult.errorMessage)
                         )
                     )
@@ -72,8 +72,8 @@ class AuthViewModel @Inject constructor(
             is AuthValidation.ValidationResult.Valid -> {
                 _uiState.update { state ->
                     state.copy(
-                        screen = AuthScreen.Password(email = email),
-                        emailError = null,
+                        screen = AuthScreen.Password(login = login),
+                        loginError = null,
                         isLoading = LoadingState.Idle
                     )
                 }
@@ -83,7 +83,7 @@ class AuthViewModel @Inject constructor(
 
     private fun submitPassword() {
         val currentState = _uiState.value
-        val email = currentState.email.trim()
+        val login = currentState.login.trim()
         val password = currentState.password.trim()
 
         when (val validationResult = AuthValidation.validatePassword(password)) {
@@ -104,7 +104,7 @@ class AuthViewModel @Inject constructor(
 
                 viewModelScope.launch {
                     val credentials = Auth(
-                        login = email, password = password
+                        login = login, password = password
                     )
 
                     val result = scenarioLoginUseCase(credentials)
@@ -190,8 +190,8 @@ class AuthViewModel @Inject constructor(
                 password = "",
                 passwordError = null,
                 isPasswordVisible = false,
-                email = "",
-                emailError = null
+                login = "",
+                loginError = null
             )
         }
     }
@@ -214,6 +214,6 @@ class AuthViewModel @Inject constructor(
     }
 
     companion object {
-        private const val INVALID_CREDENTIALS_ERROR = "Неверный email или пароль"
+        private const val INVALID_CREDENTIALS_ERROR = "Неверный логин или пароль"
     }
 }
