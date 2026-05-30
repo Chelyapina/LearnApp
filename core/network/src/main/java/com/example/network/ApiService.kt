@@ -1,6 +1,8 @@
 package com.example.network
 
 import com.example.network.modelDto.AddWordToDictionaryRequestDto
+import com.example.network.modelDto.AnswerRequestDto
+import com.example.network.modelDto.AnswerResponseDto
 import com.example.network.modelDto.AuthResponseDto
 import com.example.network.modelDto.CreateDictionaryRequestDto
 import com.example.network.modelDto.DailyStatDto
@@ -99,4 +101,10 @@ interface ApiService {
     suspend fun getDictionaryWords(
         @Header("Authorization") token: String
     ): Response<List<DictionaryResponseDto>>
+
+    @POST("/learning/training/check")
+    suspend fun checkAnswer(
+        @Header("Authorization") token: String,
+        @Body request: AnswerRequestDto
+    ): Response<AnswerResponseDto>
 }

@@ -25,6 +25,7 @@ import com.example.settings.presentation.navigation.SettingsDestination
 import com.example.splash.presentation.SplashViewModel
 import com.example.statistics.presentation.StatisticsScreen
 import com.example.statistics.presentation.StatisticsViewModel
+import com.example.deck.presentation.screen.GameScreen
 
 @SuppressLint("RestrictedApi")
 @Composable
@@ -150,6 +151,9 @@ fun LearnAppNavigation(
                 onDictionaryClick = {
                     navController.navigate("dictionaries")
                 },
+                onGameClick = {
+                    navController.navigate("game")
+                },
                 modifier = Modifier.fillMaxSize()
             )
         }
@@ -170,6 +174,14 @@ fun LearnAppNavigation(
             DictionaryScreen(
                 viewModel = dictionaryViewModel,
                 onBackClick = { navController.popBackStack() }
+            )
+        }
+
+        composable("game") {
+            GameScreen(
+                viewModel = deckViewModel,
+                onBackClick = { navController.popBackStack() },
+                modifier = Modifier.fillMaxSize()
             )
         }
     }

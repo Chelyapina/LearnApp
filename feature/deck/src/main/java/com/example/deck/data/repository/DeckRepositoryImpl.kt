@@ -7,6 +7,7 @@ import com.example.deck.domain.entity.User
 import com.example.deck.domain.entity.WordCard
 import com.example.deck.domain.entity.WordCompleted
 import com.example.deck.domain.repository.DeckRepository
+import com.example.network.modelDto.AnswerRequestDto
 import com.example.network.modelDto.WordCompletedDto
 import javax.inject.Inject
 
@@ -15,6 +16,7 @@ internal class DeckRepositoryImpl @Inject constructor(
     private val completedDeckLocalDataSource : CompletedDeckLocalDataSource,
     private val authLocalDataSource : AuthLocalDataSource
 ) : DeckRepository {
+
     override suspend fun getLearnDeck() : List<WordCard> {
         val token = authLocalDataSource.getToken()
         if (token.isNullOrEmpty()) {
@@ -83,15 +85,15 @@ internal class DeckRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getCompletedDeck() : List<WordCompleted> =
-            completedDeckLocalDataSource.getCompletedDeck()
+        completedDeckLocalDataSource.getCompletedDeck()
 
     override suspend fun clearCompletedDeck() = completedDeckLocalDataSource.clearCompletedDeck()
 
     override suspend fun addToCompletedDeck(wordId : Int, status : Boolean) =
-            completedDeckLocalDataSource.addCompletedWord(wordId, status)
+        completedDeckLocalDataSource.addCompletedWord(wordId, status)
 
     override suspend fun shouldSendCompletedDeck() : Boolean =
-            completedDeckLocalDataSource.hasReachedLimit()
+        completedDeckLocalDataSource.hasReachedLimit()
 
     override suspend fun logout() {
         authLocalDataSource.clearUserData()
@@ -99,6 +101,12 @@ internal class DeckRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getCurrentUser() : User? = authLocalDataSource.getCurrentUser()
+
+    override suspend fun checkAnswer(wordId: Int, userAnswer: String): Pair<Boolean, String> {
+        val request = AnswerRequestDto(wordId = wordId, userAnswer = userAnswer)
+        val response = remoteDataSource.checkAnswer(request)
+        return Pair(response.correct, response.correctAnswer)
+    }
 
     companion object {
         private const val EMPTY_STRING = ""

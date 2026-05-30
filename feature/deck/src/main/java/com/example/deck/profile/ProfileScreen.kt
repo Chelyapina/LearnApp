@@ -39,6 +39,7 @@ fun ProfileScreen(
     onBackClick : () -> Unit,
     onSettingsClick : () -> Unit,
     onDictionaryClick : () -> Unit,
+    onGameClick : () -> Unit,
     modifier : Modifier = Modifier
 ) {
     Scaffold(
@@ -82,6 +83,16 @@ fun ProfileScreen(
             }, supportingContent = {
                 Text(text = stringResource(id = R.string.dictionaries_description))
             })
+            ListItem(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(MaterialTheme.shapes.medium)
+                    .clickable(onClick = onGameClick),
+                headlineContent = {
+                    Text(text = stringResource(id = R.string.game_title))
+                }, supportingContent = {
+                    Text(text = stringResource(id = R.string.game_description))
+                })
 
             Button(
                 onClick = { viewModel.handleEvent(DeckEvent.Logout) },
